@@ -18,6 +18,7 @@ public class EquipoEntity {
   private List<PartidoEntity> partidosVisitante;
 
   public EquipoEntity() {
+    this.id = UUID.randomUUID();
   }
   public EquipoEntity(UUID id, String nombre, String ciudadOrigen) {
     this.id = id;

@@ -1,45 +1,33 @@
 package infrastructure.persistence.implement;
 
-import infrastructure.csv.in.CsvFileReader;
-import infrastructure.csv.out.CsvFileWriter;
 import infrastructure.entities.EquipoEntity;
 import infrastructure.entities.PartidoEntity;
 import infrastructure.entities.UsuarioEntity;
 import infrastructure.persistence.port.IPersistence;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
-public class RepositoryFileImpl implements IPersistence {
-
-  private final CsvFileWriter csvFileWriter;
-  private final CsvFileReader csvFileReader;
-
-  public RepositoryFileImpl () {
-    csvFileWriter = new CsvFileWriter();
-    csvFileReader = new CsvFileReader();
-  }
-
+public class RepositoryMySqlImpl implements IPersistence {
 
   @Override
   public void save(Object object) {
-    csvFileWriter.save(object);
+    
   }
 
   @Override
   public Optional<EquipoEntity> findEquipoByNombre(String nombre) {
-    return csvFileReader.findEquipoByNombre(nombre);
+    return Optional.empty();
   }
 
   @Override
   public Optional<UsuarioEntity> findUsuarioByEmail(String email) {
-    return csvFileReader.findUsuarioByEmail(email);
+    return Optional.empty();
   }
 
   @Override
   public Optional<PartidoEntity> findPartidoById(UUID idPartido) {
-    return csvFileReader.findPartidoById(idPartido);
+    return Optional.empty();
   }
 
   @Override
@@ -49,6 +37,6 @@ public class RepositoryFileImpl implements IPersistence {
 
   @Override
   public Set<EquipoEntity> getAllEquipos() {
-    return csvFileReader.getAll();
+    return null;
   }
 }

@@ -15,4 +15,8 @@ public class Ronda {
   private List<Partido> partidos;
   private int numero;
 
+  @Override
+  public String toString() {
+    return "Ronda{" + "partidos=" + partidos.toString() + ", numero=" + numero + '}';
+  }
 }

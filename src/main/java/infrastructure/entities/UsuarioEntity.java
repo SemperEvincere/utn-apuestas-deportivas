@@ -1,5 +1,6 @@
 package infrastructure.entities;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
@@ -9,7 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class UsuarioEntity {
+public class UsuarioEntity implements Serializable {
 
   private UUID id;
   private String nick;

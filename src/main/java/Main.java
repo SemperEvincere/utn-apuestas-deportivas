@@ -1,4 +1,11 @@
 import application.service.ApuestaService;
+import application.service.RondaService;
+import application.service.UsuarioService;
+import domain.Ronda;
+import domain.Usuario;
+import infrastructure.persistence.EquipoRepositoryImpl;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class Main {
@@ -36,9 +43,32 @@ public class Main {
 //    IPartidoCreateUseCase partidoCreateUseCase = new PartidoService();
 //    partidoCreateUseCase.create("Equipo 1", "Equipo 3", LocalDate.parse("2020-12-12"), "Ciudad 1");
 
-    ApuestaService apuestaService = new ApuestaService();
-    apuestaService.createApuesta("elsemper@gmail.com", UUID.fromString("5f1b0b3c-4247-49a3-89bf-526267d040a4"), 1, 2, 1000);
+//    ApuestaService apuestaService = new ApuestaService();
+//    apuestaService.createApuesta("elsemper@gmail.com", UUID.fromString("5f1b0b3c-4247-49a3-89bf-526267d040a4"), 1, 2, 1000);
 
+//    UsuarioService usuarioService = new UsuarioService();
+//    Usuario usuario = new Usuario();
+//    usuario.setNick("Semper Evincere");
+//    usuario.setEmail("elsemper@gmail.com");
+//    usuario.setPassword("123456");
+//    usuario.setApuestas(new ArrayList<>());
+//    usuarioService.create(usuario);
+
+//    usuarioService.read();
+
+//    EquipoRepositoryImpl equipoRepository = new EquipoRepositoryImpl();
+//    equipoRepository.readEquiposCsv();
+
+    RondaService rondaService = new RondaService();
+    List<Ronda> rondas = rondaService.createRonda();
+    for (Ronda ronda : rondas) {
+      System.out.println("Ronda N° " + ronda.getNumero());
+      ronda.getPartidos().forEach(partido -> {
+      System.out.println("El partido se celebra en: " + partido.getUbicacion());
+      System.out.println("La fecha del partido es : " + partido.getFecha());
+      System.out.println("se enfrenta " + partido.getEquipoLocal().getNombre() + " como equipo LOCAL");
+      System.out.println("contra " + partido.getEquipoVisitante().getNombre() + " como equipo VISITANTE");});
+    }
 
   }
 

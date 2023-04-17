@@ -5,6 +5,7 @@ import domain.Usuario;
 import infrastructure.entities.UsuarioEntity;
 import infrastructure.mapper.UsuarioMapper;
 import infrastructure.persistence.implement.RepositoryFileImpl;
+import infrastructure.persistence.implement.RepositorySerializeImpl;
 import infrastructure.persistence.port.IPersistence;
 import java.util.Optional;
 
@@ -14,7 +15,8 @@ public class UsuarioRepositoryImpl implements IUsuarioRepository {
   private final UsuarioMapper usuarioMapper;
 
   public UsuarioRepositoryImpl() {
-    this.persistence = new RepositoryFileImpl();
+//    this.persistence = new RepositoryFileImpl();
+    this.persistence = new RepositorySerializeImpl();
     usuarioMapper = new UsuarioMapper();
   }
   @Override
@@ -26,5 +28,10 @@ public class UsuarioRepositoryImpl implements IUsuarioRepository {
   public Optional<Usuario> findUsuarioByEmail(String email) {
     Optional<UsuarioEntity> usuarioEntity = persistence.findUsuarioByEmail(email);
     return usuarioEntity.map(usuarioMapper::toDomain);
+  }
+
+  @Override
+  public void read() {
+    persistence.read();
   }
 }

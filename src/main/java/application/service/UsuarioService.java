@@ -41,4 +41,8 @@ public class UsuarioService implements IUsuarioCreateUseCase, IUsuarioFindUseCas
   public Optional<Usuario> findUsuarioByEmail(String email) {
       return usuarioRepository.findUsuarioByEmail(email);
   }
+
+  public void read() {
+    usuarioRepository.read();
+  }
 }

@@ -1,5 +1,6 @@
 package infrastructure.csv.in;
 
+import domain.Equipo;
 import infrastructure.entities.EquipoEntity;
 import infrastructure.entities.PartidoEntity;
 import infrastructure.entities.UsuarioEntity;
@@ -10,9 +11,11 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
-public class CsvLoadFileReader {
+public class CsvFileReader {
 
   public Optional<UsuarioEntity> findUsuarioByEmail(String email) {
     try {
@@ -40,7 +43,7 @@ public class CsvLoadFileReader {
   }
 
   public Optional<EquipoEntity> findEquipoByNombre(String nombre) {
-    File file = new File("./app/src/main/resources/csv/equipos/equipos.csv");
+    File file = new File("./app/src/main/resources/csv/equipos/out/equipos.csv");
     if (!file.exists()) {
       try {
         file.createNewFile();
@@ -96,4 +99,19 @@ public class CsvLoadFileReader {
     }
   }
 
+  public Set<EquipoEntity> getAll() {
+    File file = new File("./app/src/main/resources/csv/equipos/in/equipos.csv");
+    try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
+      return bufferedReader.lines().map(line -> line.split(",")).map(equipo -> {
+        EquipoEntity equipoEntity = new EquipoEntity();
+        equipoEntity.setNombre(equipo[0]);
+        equipoEntity.setCiudadOrigen(equipo[1]);
+        return equipoEntity;
+      })
+          .collect(Collectors.toSet());
+    } catch (IOException e) {
+      throw new RuntimeException();
+
+    }
+  }
 }

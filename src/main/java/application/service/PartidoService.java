@@ -21,7 +21,7 @@ public class PartidoService implements IPartidoCreateUseCase, IPartidoFindUseCas
   }
 
   @Override
-  public void create(String nombreEquipoUno,
+  public void save(String nombreEquipoUno,
       String nombreEquipoDos,
       LocalDate fecha,
       String ubicacion) {

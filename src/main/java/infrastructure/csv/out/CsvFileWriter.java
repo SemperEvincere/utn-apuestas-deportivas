@@ -12,12 +12,12 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class CsvSaveFileWriter {
+public class CsvFileWriter {
 
   private final UsuarioMapper usuarioMapper;
   private final EquipoMapper equipoMapper;
 
-  public CsvSaveFileWriter() {
+  public CsvFileWriter() {
     this.usuarioMapper = new UsuarioMapper();
     this.equipoMapper = new EquipoMapper();
   }
@@ -25,8 +25,8 @@ public class CsvSaveFileWriter {
   public void save(Object entity) {
     if (entity instanceof Usuario) {
       saveUsuario((Usuario) entity);
-    } else if (entity instanceof Equipo) {
-      saveEquipo((Equipo) entity);
+    } else if (entity instanceof EquipoEntity) {
+      saveEquipo((EquipoEntity) entity);
     } else if (entity instanceof ApuestaEntity) {
       saveApuesta((ApuestaEntity) entity);
     } else if (entity instanceof PartidoEntity) {
@@ -58,8 +58,8 @@ public class CsvSaveFileWriter {
     }
   }
 
-  private void saveEquipo(Equipo equipo) {
-    File file = new File("./app/src/main/resources/csv/usuarios/equipos.csv");
+  private void saveEquipo(EquipoEntity equipoEntity) {
+    File file = new File("./app/src/main/resources/csv/equipos/out/equipos.csv");
     if (!file.exists()) {
       try {
         file.createNewFile();
@@ -68,10 +68,8 @@ public class CsvSaveFileWriter {
       }
     }
 
-    EquipoEntity equipoEntity = equipoMapper.toEntity(equipo);
-
     try {
-      FileWriter fileWriter = new FileWriter("./app/src/main/resources/csv/usuarios/equipos.csv", true);
+      FileWriter fileWriter = new FileWriter(file, true);
       fileWriter.append(equipoEntity.toString());
       fileWriter.append("\n");
       fileWriter.flush();

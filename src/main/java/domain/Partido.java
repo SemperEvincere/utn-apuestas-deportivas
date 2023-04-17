@@ -46,4 +46,8 @@ public class Partido {
     }
   }
 
+  @Override
+  public String toString() {
+    return "Partido{" + "id=" + id + ", equipoLocal=" + equipoLocal + ", equipoVisitante=" + equipoVisitante + ", golesLocal=" + golesLocal + ", golesVisitante=" + golesVisitante + ", fecha=" + fecha + ", ubicacion='" + ubicacion + '\'' + '}';
+  }
 }
