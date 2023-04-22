@@ -1,6 +1,7 @@
 package domain;
 
 import java.util.List;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,8 +13,10 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Ronda {
 
-  private List<Partido> partidos;
+  private UUID id;
   private int numero;
+  private List<Partido> partidos;
+
 
   @Override
   public String toString() {

@@ -1,9 +1,12 @@
 import application.service.ApuestaService;
+import application.service.EquipoService;
+import application.service.PartidoService;
 import application.service.RondaService;
 import application.service.UsuarioService;
 import domain.Ronda;
 import domain.Usuario;
 import infrastructure.persistence.EquipoRepositoryImpl;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -59,16 +62,40 @@ public class Main {
 //    EquipoRepositoryImpl equipoRepository = new EquipoRepositoryImpl();
 //    equipoRepository.readEquiposCsv();
 
+//    RondaService rondaService = new RondaService();
+//    List<Ronda> rondas = rondaService.createRonda();
+//    for (Ronda ronda : rondas) {
+//      System.out.println("Ronda N° " + ronda.getNumero());
+//      ronda.getPartidos().forEach(partido -> {
+//      System.out.println("El partido se celebra en: " + partido.getUbicacion());
+//      System.out.println("La fecha del partido es : " + partido.getFecha());
+//      System.out.println("se enfrenta " + partido.getEquipoLocal().getNombre() + " como equipo LOCAL");
+//      System.out.println("contra " + partido.getEquipoVisitante().getNombre() + " como equipo VISITANTE");});
+//    }
+
+//    UsuarioService usuarioService = new UsuarioService();
+//    Usuario usuario = new Usuario();
+//    usuario.setNick("Semper Evincere");
+//    usuario.setEmail("elsemper@gmail.com");
+//    usuario.setPassword("123456");
+//    usuario.setApuestas(new ArrayList<>());
+//    usuarioService.create(usuario);
+
+//    EquipoService equipoService = new EquipoService();
+//    equipoService.createEquiposCsv();
+
+//    PartidoService partidoService = new PartidoService();
+//    partidoService.save("FC Barcelona", "Real Madrid", LocalDate.parse("2020-12-12"), "Madrid");
+
     RondaService rondaService = new RondaService();
-    List<Ronda> rondas = rondaService.createRonda();
-    for (Ronda ronda : rondas) {
-      System.out.println("Ronda N° " + ronda.getNumero());
-      ronda.getPartidos().forEach(partido -> {
-      System.out.println("El partido se celebra en: " + partido.getUbicacion());
-      System.out.println("La fecha del partido es : " + partido.getFecha());
-      System.out.println("se enfrenta " + partido.getEquipoLocal().getNombre() + " como equipo LOCAL");
-      System.out.println("contra " + partido.getEquipoVisitante().getNombre() + " como equipo VISITANTE");});
-    }
+//    rondaService.createRonda();
+    Ronda ronda = rondaService.findRondaByNumero(1);
+
+      System.out.println("El partido se celebra en: " + ronda.getPartidos().get(0).getUbicacion());
+      System.out.println("La fecha del partido es : " + ronda.getPartidos().get(0).getFecha());
+      System.out.println("se enfrenta " + ronda.getPartidos().get(0).getEquipoLocal().getNombre() + " como equipo LOCAL");
+      System.out.println("contra " + ronda.getPartidos().get(0).getEquipoVisitante().getNombre() + " como equipo VISITANTE");
+
 
   }
 

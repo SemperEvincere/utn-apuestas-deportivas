@@ -35,4 +35,8 @@ public class EquipoService implements IEquipoCreateUseCase, IEquipoFindUseCase {
   public Optional<Equipo> findEquipoByNombre(String nombre) {
     return equipoRepository.findEquipoByNombre(nombre);
   }
+
+  public void createEquiposCsv() {
+    equipoRepository.createEquiposCsv();
+  }
 }

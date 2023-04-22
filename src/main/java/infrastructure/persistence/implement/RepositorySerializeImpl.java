@@ -1,5 +1,6 @@
 package infrastructure.persistence.implement;
 
+import domain.Ronda;
 import domain.Usuario;
 import infrastructure.entities.EquipoEntity;
 import infrastructure.entities.PartidoEntity;
@@ -7,6 +8,7 @@ import infrastructure.entities.UsuarioEntity;
 import infrastructure.persistence.port.IPersistence;
 import infrastructure.serialize.in.SerializeLoader;
 import infrastructure.serialize.out.SerializeWriter;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -15,6 +17,7 @@ public class RepositorySerializeImpl implements IPersistence {
 
   private SerializeWriter serializeWriter;
   private SerializeLoader serializeLoader;
+  String pathUsuarios = "./app/src/main/resources/csv/usuarios/usuarios.dat";
 
   public RepositorySerializeImpl() {
     this.serializeWriter = new SerializeWriter();
@@ -26,13 +29,33 @@ public class RepositorySerializeImpl implements IPersistence {
   }
 
   @Override
-  public void read() {
-    serializeLoader.read();
+  public void readUsuarios() {
+    serializeLoader.read(pathUsuarios);
   }
 
   @Override
-  public Set<EquipoEntity> getAllEquipos() {
+  public List<EquipoEntity> getAllEquiposCsv() {
     return null;
+  }
+
+  @Override
+  public List<EquipoEntity> getAllEquipos() {
+    return serializeLoader.getAllEquipos();
+  }
+
+  @Override
+  public void saveRonda(Ronda ronda) {
+
+  }
+
+  @Override
+  public Ronda findRondaByNumero(int numeroRonda) {
+    return null;
+  }
+
+  @Override
+  public void saveAll(List<EquipoEntity> equipos) {
+
   }
 
   @Override

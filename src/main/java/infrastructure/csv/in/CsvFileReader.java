@@ -10,6 +10,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -99,16 +100,18 @@ public class CsvFileReader {
     }
   }
 
-  public Set<EquipoEntity> getAll() {
+  public List<EquipoEntity> getAll() {
     File file = new File("./app/src/main/resources/csv/equipos/in/equipos.csv");
     try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
       return bufferedReader.lines().map(line -> line.split(",")).map(equipo -> {
         EquipoEntity equipoEntity = new EquipoEntity();
         equipoEntity.setNombre(equipo[0]);
         equipoEntity.setCiudadOrigen(equipo[1]);
+        equipoEntity.setPartidosLocal(new ArrayList<>());
+        equipoEntity.setPartidosVisitante(new ArrayList<>());
         return equipoEntity;
       })
-          .collect(Collectors.toSet());
+          .collect(Collectors.toList());
     } catch (IOException e) {
       throw new RuntimeException();
 

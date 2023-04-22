@@ -6,4 +6,6 @@ import java.util.List;
 public interface IRondaRepository {
 
   List<Ronda> create();
+
+  Ronda findRondaByNumero(int numeroRonda);
 }

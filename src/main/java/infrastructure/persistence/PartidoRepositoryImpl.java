@@ -4,6 +4,7 @@ import application.repository.IPartidoRepository;
 import domain.Partido;
 import infrastructure.mapper.PartidoMapper;
 import infrastructure.persistence.implement.RepositoryFileImpl;
+import infrastructure.persistence.implement.RepositoryMySqlImpl;
 import infrastructure.persistence.port.IPersistence;
 import java.util.Optional;
 import java.util.UUID;
@@ -14,7 +15,7 @@ public class PartidoRepositoryImpl implements IPartidoRepository {
   private final PartidoMapper partidoMapper;
 
   public PartidoRepositoryImpl() {
-    this.persistence = new RepositoryFileImpl();
+    this.persistence = new RepositoryMySqlImpl();
     this.partidoMapper = new PartidoMapper();
   }
 

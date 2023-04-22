@@ -1,26 +1,39 @@
 package infrastructure.serialize.in;
 
 import domain.Usuario;
+import infrastructure.entities.EquipoEntity;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public class SerializeLoader {
 
-  String path = "./app/src/main/resources/csv/usuarios/usuarios.dat";
 
-  public void read() {
+
+  public void read(String path) {
     try {
       FileInputStream archivo = new FileInputStream(path);
       ObjectInputStream objectInputStream = new ObjectInputStream(archivo);
 
       Usuario usuario = (Usuario) objectInputStream.readObject();
-      System.out.println(usuario.getNick());
     } catch (IOException | ClassNotFoundException e) {
       throw new RuntimeException(e);
     }
   }
 
+  public List<EquipoEntity> getAllEquipos() {
+
+    try {
+      FileInputStream archivo = new FileInputStream("./app/src/main/resources/csv/equipos/equipos.dat");
+      ObjectInputStream objectInputStream = new ObjectInputStream(archivo);
+
+      return (List<EquipoEntity>) objectInputStream.readObject();
+    } catch (IOException | ClassNotFoundException e) {
+      throw new RuntimeException(e);
+    }
+  }
 }

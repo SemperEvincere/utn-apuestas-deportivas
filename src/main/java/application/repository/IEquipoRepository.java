@@ -8,4 +8,6 @@ public interface IEquipoRepository {
   void save(Equipo equipo);
 
   Optional<Equipo> findEquipoByNombre(String nombre);
+
+  void createEquiposCsv();
 }

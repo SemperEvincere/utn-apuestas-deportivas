@@ -35,6 +35,10 @@ public class Partido {
   private void estableceEquipoLocal(Equipo equipoUno,
       Equipo equipoDos,
       String ubicacion) {
+    equipoUno.setCiudadOrigen(equipoUno.getCiudadOrigen().trim().toLowerCase());
+    equipoDos.setCiudadOrigen(equipoDos.getCiudadOrigen().trim().toLowerCase());
+    ubicacion = ubicacion.trim().toLowerCase();
+
     if (ubicacion.equals(equipoUno.getCiudadOrigen())) {
       this.equipoLocal = equipoUno;
       this.equipoVisitante = equipoDos;

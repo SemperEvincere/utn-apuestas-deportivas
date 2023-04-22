@@ -1,7 +1,6 @@
 package infrastructure.persistence;
 
 import application.repository.IRondaRepository;
-import domain.Equipo;
 import domain.Ronda;
 import infrastructure.csv.in.CsvFileReader;
 import infrastructure.csv.out.CsvFileWriter;
@@ -9,7 +8,7 @@ import infrastructure.entities.EquipoEntity;
 import infrastructure.entities.PartidoEntity;
 import infrastructure.mapper.EquipoMapper;
 import infrastructure.mapper.PartidoMapper;
-import infrastructure.persistence.implement.RepositoryFileImpl;
+import infrastructure.persistence.implement.RepositoryMySqlImpl;
 import infrastructure.persistence.port.IPersistence;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -17,7 +16,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -34,15 +32,14 @@ public class RondaRepositoryImpl implements IRondaRepository {
     this.csvFileReader = new CsvFileReader();
     this.equipoMapper = new EquipoMapper();
     this.csvFileWriter = new CsvFileWriter();
-    this.persistence = new RepositoryFileImpl();
+    this.persistence = new RepositoryMySqlImpl();
     this.partidoMapper = new PartidoMapper();
   }
 
 
   @Override
   public List<Ronda> create() {
-    Set<EquipoEntity> equipos = persistence.getAllEquipos();
-    List<EquipoEntity> equiposList = new ArrayList<>(equipos);
+    List<EquipoEntity> equiposList = persistence.getAllEquipos();
     List<Ronda> rondas = new ArrayList<>();
     Set<LocalDate> fechasUtilizadas = new HashSet<>();
 
@@ -76,20 +73,27 @@ public class RondaRepositoryImpl implements IRondaRepository {
       }
 
       Ronda ronda = new Ronda();
-      // todo: hacer una llamada a un método para guardar la ronda en la base de datos
-      ronda.setNumero(1);
+
+      ronda.setNumero(round + 1);
       ronda.setPartidos(partidos.stream().map(partidoMapper::toDomain).collect(Collectors.toList()));
+      this.saveRonda(ronda);
       rondas.add(ronda);
+
     }
 
     return rondas;
   }
 
+  @Override
+  public Ronda findRondaByNumero(int numeroRonda) {
+    return persistence.findRondaByNumero(numeroRonda);
+  }
+
   private LocalDate establecerFecha(Set<LocalDate> fechasUtilizadas) {
     // Calcula la diferencia en milisegundos entre las dos fechas
-    LocalDate fechaInicio = LocalDate.of(2023,10,1);
-    LocalDate fechaFin = LocalDate.of(2023,11,1);
-    long diferencia = ChronoUnit.DAYS.between(fechaInicio, fechaFin);
+    LocalDate fechaInicioCampeonato = LocalDate.of(2023,10,1);
+    LocalDate fechaFinCampeonato = LocalDate.of(2023,11,1);
+    long diferencia = ChronoUnit.DAYS.between(fechaInicioCampeonato, fechaFinCampeonato);
 
     // Crea un objeto Random para generar números aleatorios
     Random random = new Random();
@@ -98,7 +102,7 @@ public class RondaRepositoryImpl implements IRondaRepository {
     long offset = random.nextLong() % diferencia;
 
     // Crea una fecha a partir de la fecha de inicio y el offset aleatorio
-    LocalDate fechaAleatoria = fechaInicio.plusDays(offset);
+    LocalDate fechaAleatoria = fechaInicioCampeonato.plusDays(offset);
 
     // Verifica si la fecha ya ha sido utilizada anteriormente
     if (fechasUtilizadas.contains(fechaAleatoria)) {
@@ -109,5 +113,9 @@ public class RondaRepositoryImpl implements IRondaRepository {
       fechasUtilizadas.add(fechaAleatoria);
       return fechaAleatoria;
     }
+  }
+
+  public void saveRonda(Ronda ronda) {
+    persistence.saveRonda(ronda);
   }
 }

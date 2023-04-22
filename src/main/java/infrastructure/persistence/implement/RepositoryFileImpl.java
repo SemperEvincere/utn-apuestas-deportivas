@@ -1,5 +1,6 @@
 package infrastructure.persistence.implement;
 
+import domain.Ronda;
 import infrastructure.csv.in.CsvFileReader;
 import infrastructure.csv.out.CsvFileWriter;
 import infrastructure.entities.EquipoEntity;
@@ -43,12 +44,35 @@ public class RepositoryFileImpl implements IPersistence {
   }
 
   @Override
-  public void read() {
+  public void readUsuarios() {
+  }
+
+  @Override
+  public List<EquipoEntity> getAllEquiposCsv() {
+    return csvFileReader.getAll();
+  }
+
+
+  @Override
+  public void saveAll(List<EquipoEntity> equipos) {
+    for (EquipoEntity equipo : equipos) {
+
+      csvFileWriter.save(equipo);
+    }
+  }
+
+  @Override
+  public List<EquipoEntity> getAllEquipos() {
+    return csvFileReader.getAll();
+  }
+
+  @Override
+  public void saveRonda(Ronda ronda) {
 
   }
 
   @Override
-  public Set<EquipoEntity> getAllEquipos() {
-    return csvFileReader.getAll();
+  public Ronda findRondaByNumero(int numeroRonda) {
+    return null;
   }
 }

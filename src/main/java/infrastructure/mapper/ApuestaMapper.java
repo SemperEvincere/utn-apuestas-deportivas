@@ -22,9 +22,7 @@ private final PartidoService partidoService;
     public ApuestaEntity toEntity(Apuesta apuesta) {
       ApuestaEntity apuestaEntity = new ApuestaEntity();
       apuestaEntity.setIdUsuario(apuesta.getUsuario().getId());
-//      apuestaEntity.setIdUsuario(usuarioService.findUsuarioByEmail(apuesta.getUsuario().getEmail()).get().getId());
       apuestaEntity.setIdPartido(apuesta.getPartido().getId());
-//      apuestaEntity.setIdPartido(partidoService.findPartidoById(apuesta.getPartido().getId()).get().getId());
       apuestaEntity.setGolesLocalPronosticados(apuesta.getGolesLocalPronosticados());
       apuestaEntity.setGolesVisitantePronosticados(apuesta.getGolesVisitantePronosticados());
       apuestaEntity.setMontoApostado(apuesta.getMontoApostado());

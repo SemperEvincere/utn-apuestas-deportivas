@@ -25,8 +25,8 @@ public class PartidoService implements IPartidoCreateUseCase, IPartidoFindUseCas
       String nombreEquipoDos,
       LocalDate fecha,
       String ubicacion) {
-    Equipo equipoUno = equipoService.findEquipoByNombre(nombreEquipoUno).get();
-    Equipo equipoDos = equipoService.findEquipoByNombre(nombreEquipoDos).get();
+    Equipo equipoUno = equipoService.findEquipoByNombre(nombreEquipoUno).orElseThrow();
+    Equipo equipoDos = equipoService.findEquipoByNombre(nombreEquipoDos).orElseThrow();
     Partido partido = new Partido(equipoUno, equipoDos, fecha, ubicacion);
     partidoRepository.save(partido);
   }

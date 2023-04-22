@@ -1,12 +1,11 @@
 package infrastructure.persistence.port;
 
-import domain.Equipo;
+import domain.Ronda;
 import infrastructure.entities.EquipoEntity;
 import infrastructure.entities.PartidoEntity;
 import infrastructure.entities.UsuarioEntity;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 
 public interface IPersistence {
@@ -19,7 +18,15 @@ public interface IPersistence {
 
   Optional<PartidoEntity> findPartidoById(UUID idPartido);
 
-  void read();
+  void readUsuarios();
 
-  Set<EquipoEntity> getAllEquipos();
+  List<EquipoEntity> getAllEquiposCsv();
+
+  void saveAll(List<EquipoEntity> equipos);
+
+  List<EquipoEntity> getAllEquipos();
+
+  void saveRonda(Ronda ronda);
+
+  Ronda findRondaByNumero(int numeroRonda);
 }
