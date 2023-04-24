@@ -6,6 +6,7 @@ import application.usecase.usuario.IUsuarioFindUseCase;
 import domain.Usuario;
 import infrastructure.persistence.UsuarioRepositoryImpl;
 import java.util.Optional;
+import java.util.UUID;
 
 public class UsuarioService implements IUsuarioCreateUseCase, IUsuarioFindUseCase {
 
@@ -40,6 +41,11 @@ public class UsuarioService implements IUsuarioCreateUseCase, IUsuarioFindUseCas
   @Override
   public Optional<Usuario> findUsuarioByEmail(String email) {
       return usuarioRepository.findUsuarioByEmail(email);
+  }
+
+  @Override
+  public Optional<Usuario> findUsuarioById(UUID idUsuario) {
+    return usuarioRepository.findUsuarioById(idUsuario);
   }
 
   public void read() {

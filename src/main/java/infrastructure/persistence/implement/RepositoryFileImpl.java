@@ -3,6 +3,7 @@ package infrastructure.persistence.implement;
 import domain.Ronda;
 import infrastructure.csv.in.CsvFileReader;
 import infrastructure.csv.out.CsvFileWriter;
+import infrastructure.entities.ApuestaEntity;
 import infrastructure.entities.EquipoEntity;
 import infrastructure.entities.PartidoEntity;
 import infrastructure.entities.UsuarioEntity;
@@ -74,5 +75,20 @@ public class RepositoryFileImpl implements IPersistence {
   @Override
   public Ronda findRondaByNumero(int numeroRonda) {
     return null;
+  }
+
+  @Override
+  public Optional<UsuarioEntity> findByUsuarioEmail(String email) {
+    return Optional.empty();
+  }
+
+  @Override
+  public Optional<List<ApuestaEntity>> findApuestasByUsuarioId(UUID id) {
+    return Optional.empty();
+  }
+
+  @Override
+  public Optional<UsuarioEntity> findUsuarioById(UUID idUsuario) {
+    return Optional.empty();
   }
 }

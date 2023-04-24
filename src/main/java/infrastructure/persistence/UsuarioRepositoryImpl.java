@@ -7,6 +7,7 @@ import infrastructure.mapper.UsuarioMapper;
 import infrastructure.persistence.implement.RepositoryMySqlImpl;
 import infrastructure.persistence.port.IPersistence;
 import java.util.Optional;
+import java.util.UUID;
 
 public class UsuarioRepositoryImpl implements IUsuarioRepository {
 
@@ -34,5 +35,10 @@ public class UsuarioRepositoryImpl implements IUsuarioRepository {
   @Override
   public void read() {
     persistence.readUsuarios();
+  }
+
+  @Override
+  public Optional<Usuario> findUsuarioById(UUID idUsuario) {
+    return persistence.findUsuarioById(idUsuario).map(usuarioMapper::toDomain);
   }
 }

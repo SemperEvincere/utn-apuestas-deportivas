@@ -2,14 +2,16 @@ package application.service;
 
 import application.repository.IApuestaRepository;
 import application.usecase.apuesta.IApuestaCreateUseCase;
+import application.usecase.apuesta.IApuestaFindByUsuarioEmail;
 import domain.Apuesta;
 import domain.Partido;
 import domain.Usuario;
 import infrastructure.persistence.ApuestaRepositoryImpl;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class ApuestaService implements IApuestaCreateUseCase {
+public class ApuestaService implements IApuestaCreateUseCase, IApuestaFindByUsuarioEmail {
 
   private final UsuarioService usuarioService;
   private final EquipoService equipoService;
@@ -42,5 +44,16 @@ public class ApuestaService implements IApuestaCreateUseCase {
     } else {
       throw new IllegalArgumentException("El usuario no existe");
     }
+  }
+
+
+  @Override
+  public Optional<List<Apuesta>> findApuestasByUsuarioEmail(String email) {
+    Optional<Usuario> usuario = usuarioService.findUsuarioByEmail(email);
+    if(usuario.isPresent()) {
+      return apuestaRepository.findApuestasByUsuarioEmail(email);
+    }
+
+    return Optional.empty();
   }
 }

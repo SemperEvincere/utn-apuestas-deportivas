@@ -1,6 +1,7 @@
 package infrastructure.persistence.port;
 
 import domain.Ronda;
+import infrastructure.entities.ApuestaEntity;
 import infrastructure.entities.EquipoEntity;
 import infrastructure.entities.PartidoEntity;
 import infrastructure.entities.UsuarioEntity;
@@ -29,4 +30,10 @@ public interface IPersistence {
   void saveRonda(Ronda ronda);
 
   Ronda findRondaByNumero(int numeroRonda);
+
+  Optional<UsuarioEntity> findByUsuarioEmail(String email);
+
+  Optional<List<ApuestaEntity>> findApuestasByUsuarioId(UUID id);
+
+  Optional<UsuarioEntity> findUsuarioById(UUID idUsuario);
 }

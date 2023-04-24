@@ -3,12 +3,14 @@ import application.service.EquipoService;
 import application.service.PartidoService;
 import application.service.RondaService;
 import application.service.UsuarioService;
+import domain.Apuesta;
 import domain.Ronda;
 import domain.Usuario;
 import infrastructure.persistence.EquipoRepositoryImpl;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public class Main {
@@ -91,12 +93,22 @@ public class Main {
 //    rondaService.createRonda();
     Ronda ronda = rondaService.findRondaByNumero(1);
 
-      System.out.println("El partido se celebra en: " + ronda.getPartidos().get(0).getUbicacion());
-      System.out.println("La fecha del partido es : " + ronda.getPartidos().get(0).getFecha());
-      System.out.println("se enfrenta " + ronda.getPartidos().get(0).getEquipoLocal().getNombre() + " como equipo LOCAL");
-      System.out.println("contra " + ronda.getPartidos().get(0).getEquipoVisitante().getNombre() + " como equipo VISITANTE");
+//      System.out.println("El partido se celebra en: " + ronda.getPartidos().get(0).getUbicacion());
+//      System.out.println("La fecha del partido es : " + ronda.getPartidos().get(0).getFecha());
+//      System.out.println("se enfrenta " + ronda.getPartidos().get(0).getEquipoLocal().getNombre() + " como equipo LOCAL");
+//      System.out.println("contra " + ronda.getPartidos().get(0).getEquipoVisitante().getNombre() + " como equipo VISITANTE");
+//      System.out.println("id " + ronda.getPartidos().get(0).getId());
 
 
+      ApuestaService apuestaService = new ApuestaService();
+      apuestaService.createApuesta("elsemper@gmail.com", UUID.fromString("1104e3df-c6dc-44f7-bcd3-2bc561fb5d70"), 1, 2, 1000);
+
+      Optional<List<Apuesta>> apuestas = apuestaService.findApuestasByUsuarioEmail("elsemper@gmail.com");
+      apuestas.ifPresent(apuestaList -> apuestaList.forEach(apuesta -> {
+        System.out.println("El usuario " + apuesta.getUsuario().getNick() + " ha pronosticado el siguiente resultado: " + " El equipo local " + apuesta.getPartido().getEquipoLocal().getNombre()
+            + " marcará " + apuesta.getGolesLocalPronosticados() + " goles y el equipo visitante " + apuesta.getPartido().getEquipoVisitante().getNombre() + " marcará " + apuesta.getGolesLocalPronosticados() + " goles"
+        + " en el partido que se celebra en " + apuesta.getPartido().getUbicacion() + " el día " + apuesta.getPartido().getFecha());
+      }));
   }
 
 }

@@ -5,8 +5,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.mysql.cj.jdbc.MysqlDataSource;
-import domain.Partido;
 import domain.Ronda;
+import infrastructure.entities.ApuestaEntity;
 import infrastructure.entities.EquipoEntity;
 import infrastructure.entities.PartidoEntity;
 import infrastructure.entities.RondaEntity;
@@ -15,16 +15,14 @@ import infrastructure.mapper.RondaMapper;
 import infrastructure.persistence.port.IPersistence;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.sql.Array;
 import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -65,8 +63,51 @@ public class RepositoryMySqlImpl implements IPersistence {
       saveEquipo((EquipoEntity) object);
     } else if (object instanceof PartidoEntity) {
       savePartido((PartidoEntity) object);
+    } else if (object instanceof ApuestaEntity) {
+      saveApuesta((ApuestaEntity) object);
+    } else if (object instanceof RondaEntity) {
+//      saveRonda((RondaEntity) object);
+    }
+      
+    }
+
+  private void saveApuesta(ApuestaEntity apuestaEntity) {
+    String query = "INSERT INTO apuestas ("
+        + "id, "
+        + "idUsuario, "
+        + "idPartido, "
+        + "golesLocalPronosticados, "
+        + "golesVisitantePronosticados, "
+        + "montoApostado) VALUES (?, ?, ?, ?, ?, ?)";
+    try (Connection conn = dataSource.getConnection();
+        Statement stmt = conn.createStatement()) {
+
+      // Verificar si la tabla "apuestas" existe y, si no existe, crearla
+      String createTableQuery = "CREATE TABLE IF NOT EXISTS apuestas ("
+          + "id VARCHAR(36) NOT NULL, "
+          + "idUsuario VARCHAR(36) NOT NULL, "
+          + "idPartido VARCHAR(36) NOT NULL, "
+          + "golesLocalPronosticados INT NOT NULL, "
+          + "golesVisitantePronosticados INT NOT NULL, "
+          + "montoApostado DOUBLE NOT NULL, "
+          + "PRIMARY KEY (id))";
+      stmt.executeUpdate(createTableQuery);
+
+      // Insertar los datos del partido
+      PreparedStatement preparedStatement = conn.prepareStatement(query);
+      preparedStatement.setString(1, apuestaEntity.getId().toString());
+      preparedStatement.setString(2, apuestaEntity.getIdUsuario().toString());
+      preparedStatement.setString(3, apuestaEntity.getIdPartido().toString());
+      preparedStatement.setInt(4, apuestaEntity.getGolesLocalPronosticados());
+      preparedStatement.setInt(5, apuestaEntity.getGolesVisitantePronosticados());
+      preparedStatement.setDouble(6, apuestaEntity.getMontoApostado());
+      preparedStatement.executeUpdate();
+
+    } catch (SQLException e) {
+      e.printStackTrace();
     }
   }
+
 
   private void savePartido(PartidoEntity partido) {
     String query = "INSERT INTO partidos ("
@@ -268,6 +309,83 @@ public class RepositoryMySqlImpl implements IPersistence {
     return null;
   }
 
+  @Override
+  public Optional<UsuarioEntity> findByUsuarioEmail(String email) {
+    String query = "SELECT * FROM usuarios WHERE email = ?";
+    try (Connection conn = dataSource.getConnection();
+        PreparedStatement pstmt = conn.prepareStatement(query)) {
+      pstmt.setString(1, email);
+      ResultSet rs = pstmt.executeQuery();
+      if (rs.next()) {
+        String id = rs.getString("id");
+        String nick = rs.getString("nick");
+        String emailUsuario = rs.getString("email");
+        String password = rs.getString("password");
+        String apuestas = rs.getString("apuestas");
+
+        Set<ApuestaEntity> apuestasSet = mapper.readValue(apuestas, new TypeReference<Set<ApuestaEntity>>() {
+        });
+        return Optional.of(new UsuarioEntity(UUID.fromString(id), nick, emailUsuario, password, new ArrayList<>(apuestasSet)));
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    } catch (JsonProcessingException e) {
+      throw new RuntimeException(e);
+    }
+    return Optional.empty();
+  }
+
+  @Override
+  public Optional<List<ApuestaEntity>> findApuestasByUsuarioId(UUID id) {
+    List<ApuestaEntity> apuestas = new ArrayList<>();
+    String query = "SELECT * FROM apuestas WHERE idUsuario = ?";
+    try (Connection conn = dataSource.getConnection();
+        PreparedStatement pstmt = conn.prepareStatement(query)) {
+      pstmt.setString(1, String.valueOf(id));
+      ResultSet rs = pstmt.executeQuery();
+      if (rs.next()) {
+        String idApuesta = rs.getString("id");
+        String idUsuario = rs.getString("idUsuario");
+        String idPartido = rs.getString("idPartido");
+        String golesLocalPronosticados = rs.getString("golesLocalPronosticados");
+        String golesVisitantePronosticados = rs.getString("golesVisitantePronosticados");
+        String montoApostado = rs.getString("montoApostado");
+
+        apuestas.add(new ApuestaEntity(UUID.fromString(idApuesta), UUID.fromString(idUsuario), UUID.fromString(idPartido), Integer.parseInt(golesLocalPronosticados), Integer.parseInt(golesVisitantePronosticados), Double.parseDouble(montoApostado)));
+        return Optional.of(apuestas);
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    return Optional.empty();
+  }
+
+  @Override
+  public Optional<UsuarioEntity> findUsuarioById(UUID idUsuario) {
+    String query = "SELECT * FROM usuarios WHERE id = ?";
+    try (Connection conn = dataSource.getConnection();
+        PreparedStatement pstmt = conn.prepareStatement(query)) {
+      pstmt.setString(1, String.valueOf(idUsuario));
+      ResultSet rs = pstmt.executeQuery();
+      if (rs.next()) {
+        String id = rs.getString("id");
+        String nick = rs.getString("nick");
+        String emailUsuario = rs.getString("email");
+        String password = rs.getString("password");
+        String apuestas = rs.getString("apuestas");
+
+        Set<ApuestaEntity> apuestasSet = mapper.readValue(apuestas, new TypeReference<Set<ApuestaEntity>>() {
+        });
+        return Optional.of(new UsuarioEntity(UUID.fromString(id), nick, emailUsuario, password, new ArrayList<>(apuestasSet)));
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    } catch (JsonProcessingException e) {
+      throw new RuntimeException(e);
+    }
+    return Optional.empty();
+  }
+
 
   public Optional<EquipoEntity> findEquipoByNombre(String nombre) {
     Optional<EquipoEntity> equipo = Optional.empty();
@@ -304,11 +422,56 @@ public class RepositoryMySqlImpl implements IPersistence {
 
   @Override
   public Optional<UsuarioEntity> findUsuarioByEmail(String email) {
+    Optional<UsuarioEntity> usuario = Optional.empty();
+    String query = "SELECT * FROM usuarios WHERE email = ?";
+    try (Connection conn = dataSource.getConnection();
+        PreparedStatement pstmt = conn.prepareStatement(query)) {
+      pstmt.setString(1, email);
+      ResultSet rs = pstmt.executeQuery();
+      if (rs.next()) {
+        String id = rs.getString("id");
+        String nick = rs.getString("nick");
+        String emailUsuario = rs.getString("email");
+        String password = rs.getString("password");
+        String apuestas = rs.getString("apuestas");
+
+        Set<ApuestaEntity> apuestasSet = mapper.readValue(apuestas, new TypeReference<Set<ApuestaEntity>>() {
+        });
+        List<ApuestaEntity> apuestasList = new ArrayList<>(apuestasSet);
+
+        return Optional.of(new UsuarioEntity(UUID.fromString(id), nick, emailUsuario, password, apuestasList));
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    } catch (JsonProcessingException e) {
+      throw new RuntimeException(e);
+    }
     return Optional.empty();
   }
 
   @Override
   public Optional<PartidoEntity> findPartidoById(UUID idPartido) {
+    Optional<PartidoEntity> partido = Optional.empty();
+    String query = "SELECT * FROM partidos WHERE id = ?";
+    try (Connection conn = dataSource.getConnection();
+        PreparedStatement pstmt = conn.prepareStatement(query)) {
+      pstmt.setString(1, String.valueOf(idPartido));
+      ResultSet rs = pstmt.executeQuery();
+      if (rs.next()) {
+        String id = rs.getString("id");
+        String fecha = rs.getString("fecha");
+        String ubicacion = rs.getString("ubicacion");
+        String equipoLocal = rs.getString("nombreEquipoLocal");
+        String equipoVisitante = rs.getString("nombreEquipoVisitante");
+        String golesLocal = rs.getString("golesLocal");
+        String golesVisitante = rs.getString("golesVisitante");
+
+
+        return Optional.of(new PartidoEntity(UUID.fromString(id), LocalDate.parse(fecha), ubicacion, equipoLocal, equipoVisitante, Integer.parseInt(golesLocal), Integer.parseInt(golesVisitante)));
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
     return Optional.empty();
   }
 
