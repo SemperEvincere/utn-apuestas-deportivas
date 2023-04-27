@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Partido {
+public class Partido implements Comparable<Partido>{
 
   private UUID id;
   private Equipo equipoLocal;
@@ -53,5 +53,10 @@ public class Partido {
   @Override
   public String toString() {
     return "Partido{" + "id=" + id + ", equipoLocal=" + equipoLocal + ", equipoVisitante=" + equipoVisitante + ", golesLocal=" + golesLocal + ", golesVisitante=" + golesVisitante + ", fecha=" + fecha + ", ubicacion='" + ubicacion + '\'' + '}';
+  }
+
+  @Override
+  public int compareTo(Partido partido) {
+    return this.fecha.compareTo(partido.getFecha());
   }
 }

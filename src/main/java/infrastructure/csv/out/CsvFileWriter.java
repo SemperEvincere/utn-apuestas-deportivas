@@ -1,11 +1,10 @@
 package infrastructure.csv.out;
 
-import domain.Equipo;
 import domain.Usuario;
-import infrastructure.entities.ApuestaEntity;
-import infrastructure.entities.EquipoEntity;
-import infrastructure.entities.PartidoEntity;
-import infrastructure.entities.UsuarioEntity;
+import infrastructure.database.entities.ApuestaEntity;
+import infrastructure.database.entities.EquipoEntity;
+import infrastructure.database.entities.PartidoEntity;
+import infrastructure.database.entities.UsuarioEntity;
 import infrastructure.mapper.EquipoMapper;
 import infrastructure.mapper.UsuarioMapper;
 import java.io.File;

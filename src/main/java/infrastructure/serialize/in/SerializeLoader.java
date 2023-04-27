@@ -1,14 +1,11 @@
 package infrastructure.serialize.in;
 
 import domain.Usuario;
-import infrastructure.entities.EquipoEntity;
+import infrastructure.database.entities.EquipoEntity;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 
 public class SerializeLoader {
 

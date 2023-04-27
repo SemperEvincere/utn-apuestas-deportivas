@@ -4,7 +4,9 @@ import application.repository.IEquipoRepository;
 import application.usecase.equipo.IEquipoCreateUseCase;
 import application.usecase.equipo.IEquipoFindUseCase;
 import domain.Equipo;
-import infrastructure.persistence.EquipoRepositoryImpl;
+import infrastructure.database.persistence.EquipoRepositoryImpl;
+
+import java.util.List;
 import java.util.Optional;
 
 public class EquipoService implements IEquipoCreateUseCase, IEquipoFindUseCase {
@@ -34,6 +36,11 @@ public class EquipoService implements IEquipoCreateUseCase, IEquipoFindUseCase {
   @Override
   public Optional<Equipo> findEquipoByNombre(String nombre) {
     return equipoRepository.findEquipoByNombre(nombre);
+  }
+
+  @Override
+  public List<Equipo> getAllEquipos() {
+    return equipoRepository.getAllEquipos();
   }
 
   public void createEquiposCsv() {

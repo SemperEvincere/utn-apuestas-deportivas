@@ -2,7 +2,7 @@ package infrastructure.mapper;
 
 import application.service.EquipoService;
 import domain.Partido;
-import infrastructure.entities.PartidoEntity;
+import infrastructure.database.entities.PartidoEntity;
 
 public class PartidoMapper {
 

@@ -1,16 +1,9 @@
 package infrastructure.serialize.out;
 
 import domain.Usuario;
-import infrastructure.entities.EquipoEntity;
-import infrastructure.entities.PartidoEntity;
-import infrastructure.entities.UsuarioEntity;
-import infrastructure.persistence.port.IPersistence;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.util.Optional;
-import java.util.UUID;
 
 public class SerializeWriter {
 

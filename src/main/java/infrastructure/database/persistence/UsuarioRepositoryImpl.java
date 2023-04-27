@@ -1,11 +1,11 @@
-package infrastructure.persistence;
+package infrastructure.database.persistence;
 
 import application.repository.IUsuarioRepository;
 import domain.Usuario;
-import infrastructure.entities.UsuarioEntity;
+import infrastructure.database.persistence.implement.RepositoryMySqlImpl;
+import infrastructure.database.persistence.port.IPersistence;
+import infrastructure.database.entities.UsuarioEntity;
 import infrastructure.mapper.UsuarioMapper;
-import infrastructure.persistence.implement.RepositoryMySqlImpl;
-import infrastructure.persistence.port.IPersistence;
 import java.util.Optional;
 import java.util.UUID;
 

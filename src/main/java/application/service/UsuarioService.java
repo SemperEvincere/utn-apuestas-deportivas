@@ -4,7 +4,7 @@ import application.repository.IUsuarioRepository;
 import application.usecase.usuario.IUsuarioCreateUseCase;
 import application.usecase.usuario.IUsuarioFindUseCase;
 import domain.Usuario;
-import infrastructure.persistence.UsuarioRepositoryImpl;
+import infrastructure.database.persistence.UsuarioRepositoryImpl;
 import java.util.Optional;
 import java.util.UUID;
 

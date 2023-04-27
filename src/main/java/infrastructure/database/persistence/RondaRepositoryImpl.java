@@ -1,15 +1,16 @@
-package infrastructure.persistence;
+package infrastructure.database.persistence;
 
 import application.repository.IRondaRepository;
+import domain.Partido;
 import domain.Ronda;
 import infrastructure.csv.in.CsvFileReader;
 import infrastructure.csv.out.CsvFileWriter;
-import infrastructure.entities.EquipoEntity;
-import infrastructure.entities.PartidoEntity;
+import infrastructure.database.persistence.implement.RepositoryMySqlImpl;
+import infrastructure.database.persistence.port.IPersistence;
+import infrastructure.database.entities.EquipoEntity;
+import infrastructure.database.entities.PartidoEntity;
 import infrastructure.mapper.EquipoMapper;
 import infrastructure.mapper.PartidoMapper;
-import infrastructure.persistence.implement.RepositoryMySqlImpl;
-import infrastructure.persistence.port.IPersistence;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class RondaRepositoryImpl implements IRondaRepository {
 
@@ -48,48 +50,62 @@ public class RondaRepositoryImpl implements IRondaRepository {
 
     // calcular el numero de rondas necesarias
     int rounds = equiposList.size() - 1;
-
     int matchesPerRound = equiposList.size() / 2;
 
     for (int round = 0; round < rounds; round++) {
-      List<PartidoEntity> partidos = new ArrayList<>();
+      int finalRound = round;
+      List<PartidoEntity> partidos = IntStream.range(0, matchesPerRound)
+          .mapToObj(match -> {
+            int localIndex = (finalRound + match) % (equiposList.size() - 1);
+            int visitanteIndex = (equiposList.size() - 1 - match + finalRound) % (equiposList.size() - 1);
 
-      for (int match = 0; match < matchesPerRound; match++) {
-        int localIndex = (round + match) % (equiposList.size() - 1);
-        int visitanteIndex = (equiposList.size() - 1 - match + round) % (equiposList.size() - 1);
+            EquipoEntity equipoLocal = equiposList.get(localIndex);
+            EquipoEntity equipoVisitante = equiposList.get(visitanteIndex);
 
-        EquipoEntity equipoLocal = equiposList.get(localIndex);
-        EquipoEntity equipoVisitante = equiposList.get(visitanteIndex);
+            PartidoEntity partido = new PartidoEntity();
+            partido.setUbicacion(equipoLocal.getCiudadOrigen());
+            partido.setFecha(this.establecerFecha(fechasUtilizadas));
+            partido.setNombreEquipoLocal(equipoLocal.getNombre());
+            partido.setNombreEquipoVisitante(equipoVisitante.getNombre());
+            partido.setGolesLocal(0);
+            partido.setGolesVisitante(0);
 
-        PartidoEntity partido = new PartidoEntity();
-        partido.setUbicacion(equipoLocal.getCiudadOrigen());
-        partido.setFecha(this.establecerFecha(fechasUtilizadas));
-        partido.setNombreEquipoLocal(equipoLocal.getNombre());
-        partido.setNombreEquipoVisitante(equipoVisitante.getNombre());
-        partido.setGolesLocal(0);
-        partido.setGolesVisitante(0);
-
-        partidos.add(partido);
-      }
+            return partido;
+          })
+          .toList();
 
       Ronda ronda = new Ronda();
-
       ronda.setNumero(round + 1);
-      ronda.setPartidos(partidos.stream().map(partidoMapper::toDomain).collect(Collectors.toList()));
+      ronda.setPartidos(partidos.stream().map(partidoMapper::toDomain).toList());
       this.saveRonda(ronda);
       rondas.add(ronda);
-
     }
 
     return rondas;
   }
+
 
   @Override
   public Ronda findRondaByNumero(int numeroRonda) {
     return persistence.findRondaByNumero(numeroRonda);
   }
 
-  private LocalDate establecerFecha(Set<LocalDate> fechasUtilizadas) {
+    @Override
+    public List<Ronda> getAllRondas() {
+        return persistence.getAllRondas().stream().map( rondaEntity -> {
+            Ronda ronda = new Ronda();
+            ronda.setNumero(rondaEntity.getNumeroRonda());
+            ronda.setPartidos(rondaEntity.getPartidos().stream().map(partidoMapper::toDomain).collect(Collectors.toList()));
+            return ronda;
+        }).collect(Collectors.toList());
+    }
+
+    @Override
+    public Partido findPartidoByFecha(LocalDate fechaPartido) {
+        return persistence.findPartidoByFecha(fechaPartido);
+    }
+
+    private LocalDate establecerFecha(Set<LocalDate> fechasUtilizadas) {
     // Calcula la diferencia en milisegundos entre las dos fechas
     LocalDate fechaInicioCampeonato = LocalDate.of(2023,10,1);
     LocalDate fechaFinCampeonato = LocalDate.of(2023,11,1);

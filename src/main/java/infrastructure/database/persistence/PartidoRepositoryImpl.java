@@ -1,11 +1,10 @@
-package infrastructure.persistence;
+package infrastructure.database.persistence;
 
 import application.repository.IPartidoRepository;
 import domain.Partido;
+import infrastructure.database.persistence.implement.RepositoryMySqlImpl;
 import infrastructure.mapper.PartidoMapper;
-import infrastructure.persistence.implement.RepositoryFileImpl;
-import infrastructure.persistence.implement.RepositoryMySqlImpl;
-import infrastructure.persistence.port.IPersistence;
+import infrastructure.database.persistence.port.IPersistence;
 import java.util.Optional;
 import java.util.UUID;
 

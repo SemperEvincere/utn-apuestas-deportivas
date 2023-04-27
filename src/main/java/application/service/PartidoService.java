@@ -5,7 +5,7 @@ import application.usecase.partido.IPartidoCreateUseCase;
 import application.usecase.partido.IPartidoFindUseCase;
 import domain.Equipo;
 import domain.Partido;
-import infrastructure.persistence.PartidoRepositoryImpl;
+import infrastructure.database.persistence.PartidoRepositoryImpl;
 import java.time.LocalDate;
 import java.util.Optional;
 import java.util.UUID;

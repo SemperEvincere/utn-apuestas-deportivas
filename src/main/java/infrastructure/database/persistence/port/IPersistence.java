@@ -1,10 +1,10 @@
-package infrastructure.persistence.port;
+package infrastructure.database.persistence.port;
 
+import domain.Partido;
 import domain.Ronda;
-import infrastructure.entities.ApuestaEntity;
-import infrastructure.entities.EquipoEntity;
-import infrastructure.entities.PartidoEntity;
-import infrastructure.entities.UsuarioEntity;
+import infrastructure.database.entities.*;
+
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -36,4 +36,8 @@ public interface IPersistence {
   Optional<List<ApuestaEntity>> findApuestasByUsuarioId(UUID id);
 
   Optional<UsuarioEntity> findUsuarioById(UUID idUsuario);
+
+  List<RondaEntity> getAllRondas();
+
+  Partido findPartidoByFecha(LocalDate fechaPartido);
 }

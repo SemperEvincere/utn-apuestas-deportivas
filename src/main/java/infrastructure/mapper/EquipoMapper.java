@@ -2,7 +2,7 @@ package infrastructure.mapper;
 
 import domain.Equipo;
 import domain.Estadisticas;
-import infrastructure.entities.EquipoEntity;
+import infrastructure.database.entities.EquipoEntity;
 import java.util.ArrayList;
 
 public class EquipoMapper {

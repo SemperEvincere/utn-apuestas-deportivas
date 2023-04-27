@@ -3,7 +3,7 @@ package infrastructure.mapper;
 import application.service.PartidoService;
 import application.service.UsuarioService;
 import domain.Apuesta;
-import infrastructure.entities.ApuestaEntity;
+import infrastructure.database.entities.ApuestaEntity;
 import java.util.ArrayList;
 import java.util.List;
 

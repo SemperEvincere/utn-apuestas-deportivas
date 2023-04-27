@@ -1,18 +1,19 @@
-package infrastructure.persistence.implement;
+package infrastructure.database.persistence.implement;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.mysql.cj.jdbc.MysqlDataSource;
+import domain.Partido;
 import domain.Ronda;
-import infrastructure.entities.ApuestaEntity;
-import infrastructure.entities.EquipoEntity;
-import infrastructure.entities.PartidoEntity;
-import infrastructure.entities.RondaEntity;
-import infrastructure.entities.UsuarioEntity;
+import infrastructure.database.entities.ApuestaEntity;
+import infrastructure.database.entities.EquipoEntity;
+import infrastructure.database.entities.PartidoEntity;
+import infrastructure.database.entities.RondaEntity;
+import infrastructure.database.entities.UsuarioEntity;
 import infrastructure.mapper.RondaMapper;
-import infrastructure.persistence.port.IPersistence;
+import infrastructure.database.persistence.port.IPersistence;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.sql.Blob;
@@ -22,11 +23,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import javax.sql.DataSource;
 
 public class RepositoryMySqlImpl implements IPersistence {
@@ -220,7 +217,7 @@ public class RepositoryMySqlImpl implements IPersistence {
 
   @Override
   public void saveAll(List<EquipoEntity> equipos) {
-    equipos.forEach(this::save);
+      equipos.forEach(this::save);
   }
 
   @Override
@@ -237,7 +234,7 @@ public class RepositoryMySqlImpl implements IPersistence {
         String partidosLocal = rs.getString("partidosLocal");
         String partidosVisitante = rs.getString("partidosVisitante");
 
-        //  esta línea está deserializando la cadena JSON partidosLocal en un objeto Set<PartidoEntity> utilizando Jackson.
+        //  esta línea está deserializando partidosLocal en un objeto Set<PartidoEntity> utilizando Jackson.
         Set<PartidoEntity> partidosLocalSet = mapper.readValue(partidosLocal, new TypeReference<Set<PartidoEntity>>() {
         });
         Set<PartidoEntity> partidosVisitanteSet = mapper.readValue(partidosVisitante, new TypeReference<Set<PartidoEntity>>() {
@@ -384,6 +381,37 @@ public class RepositoryMySqlImpl implements IPersistence {
       throw new RuntimeException(e);
     }
     return Optional.empty();
+  }
+
+  @Override
+  public List<RondaEntity> getAllRondas() {
+    List<RondaEntity> rondas = new ArrayList<>();
+    String query = "SELECT * FROM rondas";
+    try (Connection conn = dataSource.getConnection();
+        PreparedStatement pstmt = conn.prepareStatement(query)) {
+      ResultSet rs = pstmt.executeQuery();
+      while (rs.next()) {
+        String id = rs.getString("id");
+        String nombreRonda = rs.getString("nombre");
+        Blob partidosBlob = rs.getBlob("partidos");
+        byte[] partidosBytes = partidosBlob.getBytes(1, (int) partidosBlob.length());
+        List<PartidoEntity> partidos = mapper.readValue(partidosBytes, new TypeReference<List<PartidoEntity>>() {
+        });
+
+        rondas.add(new RondaEntity(UUID.fromString(id), Integer.parseInt(nombreRonda), partidos));
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+    return rondas;
+  }
+
+  @Override
+  public Partido findPartidoByFecha(LocalDate fechaPartido) {
+    List<Partido> partidosPorRonda = findRondaByNumero(1).getPartidos();
+    return partidosPorRonda.stream().filter(partido -> partido.getFecha().isEqual(fechaPartido)).findFirst().get();
   }
 
 

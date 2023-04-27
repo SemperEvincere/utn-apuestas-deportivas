@@ -6,7 +6,7 @@ import application.usecase.apuesta.IApuestaFindByUsuarioEmail;
 import domain.Apuesta;
 import domain.Partido;
 import domain.Usuario;
-import infrastructure.persistence.ApuestaRepositoryImpl;
+import infrastructure.database.persistence.ApuestaRepositoryImpl;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;

@@ -1,17 +1,15 @@
-package infrastructure.persistence.implement;
+package infrastructure.database.persistence.implement;
 
+import domain.Partido;
 import domain.Ronda;
-import domain.Usuario;
-import infrastructure.entities.ApuestaEntity;
-import infrastructure.entities.EquipoEntity;
-import infrastructure.entities.PartidoEntity;
-import infrastructure.entities.UsuarioEntity;
-import infrastructure.persistence.port.IPersistence;
+import infrastructure.database.entities.*;
+import infrastructure.database.persistence.port.IPersistence;
 import infrastructure.serialize.in.SerializeLoader;
 import infrastructure.serialize.out.SerializeWriter;
+
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 
 public class RepositorySerializeImpl implements IPersistence {
@@ -67,6 +65,16 @@ public class RepositorySerializeImpl implements IPersistence {
   @Override
   public Optional<UsuarioEntity> findUsuarioById(UUID idUsuario) {
     return Optional.empty();
+  }
+
+  @Override
+  public List<RondaEntity> getAllRondas() {
+    return null;
+  }
+
+  @Override
+  public Partido findPartidoByFecha(LocalDate fechaPartido) {
+    return null;
   }
 
   @Override

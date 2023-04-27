@@ -1,13 +1,12 @@
-package infrastructure.persistence;
+package infrastructure.database.persistence;
 
 import application.repository.IApuestaRepository;
 import domain.Apuesta;
-import infrastructure.entities.ApuestaEntity;
-import infrastructure.entities.UsuarioEntity;
+import infrastructure.database.persistence.implement.RepositoryMySqlImpl;
+import infrastructure.database.entities.ApuestaEntity;
+import infrastructure.database.entities.UsuarioEntity;
 import infrastructure.mapper.ApuestaMapper;
-import infrastructure.persistence.implement.RepositoryFileImpl;
-import infrastructure.persistence.implement.RepositoryMySqlImpl;
-import infrastructure.persistence.port.IPersistence;
+import infrastructure.database.persistence.port.IPersistence;
 import java.util.List;
 import java.util.Optional;
 

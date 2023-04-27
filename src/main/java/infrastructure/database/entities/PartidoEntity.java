@@ -1,4 +1,4 @@
-package infrastructure.entities;
+package infrastructure.database.entities;
 
 import java.time.LocalDate;
 import java.util.UUID;

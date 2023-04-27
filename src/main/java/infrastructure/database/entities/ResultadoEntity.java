@@ -1,4 +1,4 @@
-package infrastructure.entities;
+package infrastructure.database.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

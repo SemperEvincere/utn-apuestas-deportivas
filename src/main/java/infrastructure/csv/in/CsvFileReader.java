@@ -1,9 +1,8 @@
 package infrastructure.csv.in;
 
-import domain.Equipo;
-import infrastructure.entities.EquipoEntity;
-import infrastructure.entities.PartidoEntity;
-import infrastructure.entities.UsuarioEntity;
+import infrastructure.database.entities.EquipoEntity;
+import infrastructure.database.entities.PartidoEntity;
+import infrastructure.database.entities.UsuarioEntity;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -12,7 +11,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 

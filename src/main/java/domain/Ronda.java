@@ -1,7 +1,10 @@
 package domain;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
+
+import application.repository.IRondaRepository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,6 +23,8 @@ public class Ronda {
 
   @Override
   public String toString() {
-    return "Ronda{" + "partidos=" + partidos.toString() + ", numero=" + numero + '}';
+    return "Ronda N° " + numero + "\n" +
+            "Partidos: " + partidos.size() + "\n";
+
   }
 }

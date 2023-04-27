@@ -1,4 +1,4 @@
-package infrastructure.entities;
+package infrastructure.database.entities;
 
 import java.util.List;
 import java.util.UUID;

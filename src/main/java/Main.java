@@ -1,114 +1,116 @@
-import application.service.ApuestaService;
 import application.service.EquipoService;
-import application.service.PartidoService;
 import application.service.RondaService;
 import application.service.UsuarioService;
-import domain.Apuesta;
-import domain.Ronda;
+import domain.Equipo;
+import domain.Partido;
 import domain.Usuario;
-import infrastructure.persistence.EquipoRepositoryImpl;
+
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Comparator;
 import java.util.Optional;
-import java.util.UUID;
 
 public class Main {
 
+  private static final UsuarioService usuarioService = new UsuarioService();
+  private static final EquipoService equipoService = new EquipoService();
+  private static final RondaService rondaService = new RondaService();
 
 
   public static void main(String[] args) {
-//    IUsuarioCreateUseCase usuarioCreateUseCase = new UsuarioService();
-//    IUsuarioFindUseCase usuarioFindUseCase = new UsuarioService();
-//    Usuario usuario = new Usuario();
-//    usuario.setNick("Evincere");
-//    usuario.setEmail("evincere@gmail.com");
-//    usuario.setPassword("123456");
 
-//    usuarioCreateUseCase.create(usuario);
+//    USUARIOS
+//    crearUnUsuario("Semper", "elsemper@gmail.com", "123456");
+//    mostrarUsuario("elsemper@gmail.com");
 
-//    System.out.println(usuarioFindUseCase.findUsuarioByEmail("elsemper@gmail.com"));
+//    EQUIPOS
+//    guardarEquiposEnBD();
+//    mostrarEquiposCargados();
 
-//    IEquipoCreateUseCase equipoCreateUseCase = new EquipoService();
-//
-//    Equipo equipoUno = new Equipo();
-//    equipoUno.setNombre("Equipo 1");
-//    equipoUno.setCiudadOrigen("Ciudad 1");
-//    Equipo equipoDos = new Equipo();
-//    equipoDos.setNombre("Equipo 2");
-//    equipoDos.setCiudadOrigen("Ciudad 2");
-//    Equipo equipoTres = new Equipo();
-//    equipoTres.setNombre("Equipo 3");
-//    equipoTres.setCiudadOrigen("Ciudad 3");
+//    RONDAS
+//    crearRondaDePartidos();
+    mostrarRondaDePartidos(1);
 
-//    equipoCreateUseCase.create(equipoUno);
-//    equipoCreateUseCase.create(equipoDos);
-//    equipoCreateUseCase.create(equipoTres);
-
-//    IPartidoCreateUseCase partidoCreateUseCase = new PartidoService();
-//    partidoCreateUseCase.create("Equipo 1", "Equipo 3", LocalDate.parse("2020-12-12"), "Ciudad 1");
-
-//    ApuestaService apuestaService = new ApuestaService();
-//    apuestaService.createApuesta("elsemper@gmail.com", UUID.fromString("5f1b0b3c-4247-49a3-89bf-526267d040a4"), 1, 2, 1000);
-
-//    UsuarioService usuarioService = new UsuarioService();
-//    Usuario usuario = new Usuario();
-//    usuario.setNick("Semper Evincere");
-//    usuario.setEmail("elsemper@gmail.com");
-//    usuario.setPassword("123456");
-//    usuario.setApuestas(new ArrayList<>());
-//    usuarioService.create(usuario);
-
-//    usuarioService.read();
-
-//    EquipoRepositoryImpl equipoRepository = new EquipoRepositoryImpl();
-//    equipoRepository.readEquiposCsv();
-
-//    RondaService rondaService = new RondaService();
-//    List<Ronda> rondas = rondaService.createRonda();
-//    for (Ronda ronda : rondas) {
-//      System.out.println("Ronda N° " + ronda.getNumero());
-//      ronda.getPartidos().forEach(partido -> {
-//      System.out.println("El partido se celebra en: " + partido.getUbicacion());
-//      System.out.println("La fecha del partido es : " + partido.getFecha());
-//      System.out.println("se enfrenta " + partido.getEquipoLocal().getNombre() + " como equipo LOCAL");
-//      System.out.println("contra " + partido.getEquipoVisitante().getNombre() + " como equipo VISITANTE");});
-//    }
-
-//    UsuarioService usuarioService = new UsuarioService();
-//    Usuario usuario = new Usuario();
-//    usuario.setNick("Semper Evincere");
-//    usuario.setEmail("elsemper@gmail.com");
-//    usuario.setPassword("123456");
-//    usuario.setApuestas(new ArrayList<>());
-//    usuarioService.create(usuario);
-
-//    EquipoService equipoService = new EquipoService();
-//    equipoService.createEquiposCsv();
-
-//    PartidoService partidoService = new PartidoService();
-//    partidoService.save("FC Barcelona", "Real Madrid", LocalDate.parse("2020-12-12"), "Madrid");
-
-    RondaService rondaService = new RondaService();
-//    rondaService.createRonda();
-    Ronda ronda = rondaService.findRondaByNumero(1);
-
-//      System.out.println("El partido se celebra en: " + ronda.getPartidos().get(0).getUbicacion());
-//      System.out.println("La fecha del partido es : " + ronda.getPartidos().get(0).getFecha());
-//      System.out.println("se enfrenta " + ronda.getPartidos().get(0).getEquipoLocal().getNombre() + " como equipo LOCAL");
-//      System.out.println("contra " + ronda.getPartidos().get(0).getEquipoVisitante().getNombre() + " como equipo VISITANTE");
-//      System.out.println("id " + ronda.getPartidos().get(0).getId());
+//    APUESTA
+    crearUnaApuesta("elsemper@gmail.com",
+            LocalDate.of(2023,9,22),
+            2,
+            1,
+            10000d);
 
 
-      ApuestaService apuestaService = new ApuestaService();
-      apuestaService.createApuesta("elsemper@gmail.com", UUID.fromString("1104e3df-c6dc-44f7-bcd3-2bc561fb5d70"), 1, 2, 1000);
 
-      Optional<List<Apuesta>> apuestas = apuestaService.findApuestasByUsuarioEmail("elsemper@gmail.com");
-      apuestas.ifPresent(apuestaList -> apuestaList.forEach(apuesta -> {
-        System.out.println("El usuario " + apuesta.getUsuario().getNick() + " ha pronosticado el siguiente resultado: " + " El equipo local " + apuesta.getPartido().getEquipoLocal().getNombre()
-            + " marcará " + apuesta.getGolesLocalPronosticados() + " goles y el equipo visitante " + apuesta.getPartido().getEquipoVisitante().getNombre() + " marcará " + apuesta.getGolesLocalPronosticados() + " goles"
-        + " en el partido que se celebra en " + apuesta.getPartido().getUbicacion() + " el día " + apuesta.getPartido().getFecha());
-      }));
   }
+
+  private static void crearUnaApuesta(
+          String emailApostador,
+          LocalDate fechaPartido,
+          int golesLocal,
+          int golesVisitante,
+          double montoApuesta) {
+    Optional<Usuario> usuarioSaved = usuarioService.findUsuarioByEmail(emailApostador);
+    if(usuarioSaved.isEmpty()) {
+      System.out.println("No existe un usuario con el email: " + emailApostador);
+      return;
+    }
+    Usuario usuario = usuarioSaved.get();
+    Partido partidoParaApuesta = rondaService.findPartidoByFecha(fechaPartido);
+    if(partidoParaApuesta == null) {
+      System.out.println("No existe un partido en la fecha: " + fechaPartido);
+      return;
+    }
+    
+    System.out.println(partidoParaApuesta.getEquipoLocal().getNombre());
+  }
+
+  private static void mostrarRondaDePartidos(int rondaNumero) {
+    rondaService.findRondaByNumero(rondaNumero)
+            .getPartidos()
+            .stream()
+            .sorted(Comparator.comparing(Partido::getFecha))
+            .forEach(partido ->
+                    System.out.println(
+                            "En fecha " + partido.getFecha() + " se enfrentan "
+                                    + partido.getEquipoLocal().getNombre()
+                                    + " vs "
+                                    + partido.getEquipoVisitante().getNombre() +
+                                    " en el estadio " + partido.getUbicacion())
+            );
+  }
+
+
+  private static void crearRondaDePartidos() {
+    rondaService.createRonda();
+  }
+
+  private static void mostrarEquiposCargados() {
+    equipoService.getAllEquipos().stream().map(Equipo::toString).forEach(System.out::println);
+  }
+
+
+  private static void guardarEquiposEnBD() {
+    equipoService.createEquiposCsv();
+  }
+
+  private static void mostrarUsuario(String email) {
+    Optional<Usuario> usuarioSaved = usuarioService.findUsuarioByEmail(email);
+    usuarioSaved.ifPresent(System.out::println);
+  }
+
+  private static void crearUnUsuario(String nick, String email, String password) {
+    if(verificarSiExisteUsuario(email)) {
+      System.out.println("Ya existe un usuario con el email: " + email);
+      return;
+    }
+
+    Usuario usuarioNuevo = new Usuario(nick, email, password);
+    usuarioService.create(usuarioNuevo);
+    System.out.println("Usuario creado con éxito");
+  }
+
+
+  private static boolean verificarSiExisteUsuario(String email) {
+    return usuarioService.findUsuarioByEmail(email).isPresent();
+  }
+
 
 }

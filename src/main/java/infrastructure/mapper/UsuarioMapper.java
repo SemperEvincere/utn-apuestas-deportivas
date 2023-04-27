@@ -1,7 +1,7 @@
 package infrastructure.mapper;
 
 import domain.Usuario;
-import infrastructure.entities.UsuarioEntity;
+import infrastructure.database.entities.UsuarioEntity;
 import java.util.ArrayList;
 
 

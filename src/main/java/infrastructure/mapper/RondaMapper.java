@@ -1,8 +1,10 @@
 package infrastructure.mapper;
 
 import domain.Ronda;
-import infrastructure.entities.PartidoEntity;
-import infrastructure.entities.RondaEntity;
+import infrastructure.database.entities.PartidoEntity;
+import infrastructure.database.entities.RondaEntity;
+
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;

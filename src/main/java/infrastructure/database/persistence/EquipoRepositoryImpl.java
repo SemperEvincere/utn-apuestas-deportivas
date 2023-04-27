@@ -1,18 +1,17 @@
-package infrastructure.persistence;
+package infrastructure.database.persistence;
 
 import application.repository.IEquipoRepository;
 import domain.Equipo;
 import infrastructure.csv.in.CsvFileReader;
 import infrastructure.csv.out.CsvFileWriter;
-import infrastructure.entities.EquipoEntity;
+import infrastructure.database.entities.EquipoEntity;
 import infrastructure.mapper.EquipoMapper;
-import infrastructure.persistence.implement.RepositoryFileImpl;
-import infrastructure.persistence.implement.RepositoryMySqlImpl;
-import infrastructure.persistence.port.IPersistence;
+import infrastructure.database.persistence.implement.RepositoryMySqlImpl;
+import infrastructure.database.persistence.port.IPersistence;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 public class EquipoRepositoryImpl implements IEquipoRepository {
 
@@ -41,9 +40,18 @@ public class EquipoRepositoryImpl implements IEquipoRepository {
 
   @Override
   public void createEquiposCsv() {
-    List<EquipoEntity> equipos = persistence.getAllEquiposCsv();
+    List<EquipoEntity> equipoEntitiesSaved = persistence.getAllEquipos();
+    if (equipoEntitiesSaved.isEmpty()) {
+      List<EquipoEntity> equipos = persistence.getAllEquiposCsv();
+      persistence.saveAll(equipos);
+    } else {
+      System.out.println("Los equipos ya se encuentran cargados en la BD");
+    }
+  }
 
-    persistence.saveAll(equipos);
+  @Override
+  public List<Equipo> getAllEquipos() {
+    return persistence.getAllEquipos().stream().map(equipoMapper::toDomain).collect(Collectors.toList());
   }
 
   public void readEquiposCsv() {
