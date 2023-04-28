@@ -62,8 +62,6 @@ public class RepositoryMySqlImpl implements IPersistence {
       savePartido((PartidoEntity) object);
     } else if (object instanceof ApuestaEntity) {
       saveApuesta((ApuestaEntity) object);
-    } else if (object instanceof RondaEntity) {
-//      saveRonda((RondaEntity) object);
     }
       
     }
@@ -192,7 +190,7 @@ public class RepositoryMySqlImpl implements IPersistence {
           + "nick VARCHAR(255) NOT NULL, "
           + "email VARCHAR(255) NOT NULL, "
           + "password VARCHAR(255) NOT NULL, "
-          + "apuestas VARCHAR(255) NOT NULL, "
+          + "apuestas BLOB NOT NULL, "
           + "PRIMARY KEY (id))";
       stmt.executeUpdate(createTableQuery);
 
@@ -204,7 +202,9 @@ public class RepositoryMySqlImpl implements IPersistence {
       pstmt.setString(2, usuario.getNick());
       pstmt.setString(3, usuario.getEmail());
       pstmt.setString(4, usuario.getPassword());
-      pstmt.setString(5, apuestas);
+      byte[] apuestasBytes = mapper.writeValueAsBytes(usuario.getApuestas());
+      ByteArrayInputStream bais = new ByteArrayInputStream(apuestasBytes);
+      pstmt.setBinaryStream(5, bais, apuestasBytes.length);
       pstmt.executeUpdate();
       pstmt.close();
 

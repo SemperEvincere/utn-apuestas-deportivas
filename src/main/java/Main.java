@@ -9,6 +9,7 @@ import domain.Partido;
 import domain.Usuario;
 
 import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -32,17 +33,31 @@ public class Main {
 
 //    RONDAS
 //    crearRondaDePartidos();
-    mostrarRondaDePartidos(1);
+//    mostrarRondaDePartidos(1);
 
 //    APUESTA
-    crearUnaApuesta("elsemper@gmail.com", UUID.fromString("03ab8efa-4d36-4fbb-bca3-1401f571ef62"),
-            2,
-            1,
-            10000d);
+//    crearUnaApuesta("elsemper@gmail.com", UUID.fromString("03ab8efa-4d36-4fbb-bca3-1401f571ef62"),
+//            2,
+//            1,
+//            10000d);
 
+    mostrarApuestasDeUsuario("elsemper@gmail.com");
 //    mostrarResultadosDePartido(UUID.fromString("03ab8efa-4d36-4fbb-bca3-1401f571ef62"));
 
 
+  }
+
+  private static void mostrarApuestasDeUsuario(String mail) {
+    Optional<Usuario> usuario = usuarioService.findUsuarioByEmail(mail);
+    if(usuario.isEmpty()) {
+      System.out.println("No existe un usuario con el email: " + mail);
+      return;
+    }
+    List<Apuesta> listaApuestas = usuario.get().getApuestas();
+    for (Apuesta apuesta : listaApuestas) {
+      System.out.println(apuesta.toString());
+
+    }
   }
 
   private static void mostrarResultadosDePartido(UUID uuid) {

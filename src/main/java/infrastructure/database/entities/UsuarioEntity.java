@@ -33,6 +33,6 @@ public class UsuarioEntity implements Serializable {
   }
 
   public void setApuestas(List<ApuestaEntity> apuestas) {
-    this.apuestas = new ArrayList<>(apuestas);
+    this.apuestas = apuestas;
   }
 }

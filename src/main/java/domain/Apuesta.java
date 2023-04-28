@@ -26,6 +26,17 @@ public class Apuesta {
     this.montoApostado = montoApostado;
   }
 
+  @Override
+  public String toString() {
+    return "En la apuesta con id: " + id + "\n"
+//        + "fue realizada por el usuario: " + usuario
+//        + "para el partido que se celebrará en: " + partido.getUbicacion()
+        + "el usuario ha pronosticado: " + "\n"
+        + "que el equipo Local marcará: " + golesLocalPronosticados + "\n"
+        + "y el equipo visitante marcará: " + golesVisitantePronosticados + "\n"
+        + "el monto apostado es de $:" + montoApostado + "\n";
+  }
+
   //todo : calcularResultado(); En la clase Usuario un metodo calcularPuntos que recorrar la lista de apuestas y
   // compare el resultado de la apuesta con el resultado del partido de esa misma apuesta
 }
