@@ -70,8 +70,9 @@ public class RondaRepositoryImpl implements IRondaRepository {
             partido.setFecha(this.establecerFecha(fechasUtilizadas));
             partido.setNombreEquipoLocal(equipoLocal.getNombre());
             partido.setNombreEquipoVisitante(equipoVisitante.getNombre());
-            partido.setGolesLocal(0);
-            partido.setGolesVisitante(0);
+            Random random = new Random();
+            partido.setGolesLocal(random.nextInt(11));
+            partido.setGolesVisitante(random.nextInt(11));
             partidoRepository.save(partidoMapper.toDomain(partido));
             return partido;
           })

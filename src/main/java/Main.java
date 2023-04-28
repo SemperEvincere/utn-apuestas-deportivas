@@ -1,6 +1,7 @@
 import application.service.ApuestaService;
 import application.service.EquipoService;
 import application.service.PartidoService;
+import application.service.ResultadoService;
 import application.service.RondaService;
 import application.service.UsuarioService;
 import domain.Apuesta;
@@ -8,6 +9,7 @@ import domain.Equipo;
 import domain.Partido;
 import domain.Usuario;
 
+import infrastructure.database.entities.ApuestaEntity;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -20,6 +22,7 @@ public class Main {
   private static RondaService rondaService = new RondaService();
   private static PartidoService partidoService = new PartidoService();
   private static ApuestaService apuestaService = new ApuestaService();
+  private static ResultadoService resultadoService = new ResultadoService();
 
   public static void main(String[] args) {
 
@@ -36,15 +39,23 @@ public class Main {
 //    mostrarRondaDePartidos(1);
 
 //    APUESTA
-//    crearUnaApuesta("elsemper@gmail.com", UUID.fromString("03ab8efa-4d36-4fbb-bca3-1401f571ef62"),
+//    Optional<Partido> partido = partidoService.findPartidoById(UUID.fromString("03ab8efa-4d36-4fbb-bca3-1401f571ef62"));
+//    crearUnaApuesta("elsemper@gmail.com", partido.get(),
 //            2,
 //            1,
 //            10000d);
 
-    mostrarApuestasDeUsuario("elsemper@gmail.com");
+//    mostrarApuestasDeUsuario("elsemper@gmail.com");
 //    mostrarResultadosDePartido(UUID.fromString("03ab8efa-4d36-4fbb-bca3-1401f571ef62"));
 
+    Optional<Usuario> usuario = usuarioService.findUsuarioByEmail("elsemper@gmail.com");
 
+    calcularResultadoDeApuesta(usuario.get());
+
+  }
+
+  private static void calcularResultadoDeApuesta(Usuario usuario) {
+    resultadoService.calcularResultadoDeApuesta(usuario);
   }
 
   private static void mostrarApuestasDeUsuario(String mail) {
@@ -60,14 +71,11 @@ public class Main {
     }
   }
 
-  private static void mostrarResultadosDePartido(UUID uuid) {
-    Optional<Partido> partido = partidoService.findPartidoById(uuid);
 
-  }
 
   private static void crearUnaApuesta(
           String emailApostador,
-          UUID idPartido,
+          Partido partido,
           int golesLocal,
           int golesVisitante,
           double montoApuesta) {
@@ -77,15 +85,10 @@ public class Main {
       return;
     }
     Usuario usuario = usuarioSaved.get();
-    Optional<Partido> partidoParaApuesta = partidoService.findPartidoById(idPartido);
-    if(partidoParaApuesta.isEmpty()) {
-      System.out.println("No existe un partido con este id: " + idPartido);
-      return;
-    }
 
     Apuesta apuestaCreated = apuestaService.createApuesta(
         emailApostador,
-        partidoParaApuesta.get().getId(),
+        partido,
         golesLocal,
         golesVisitante,
         montoApuesta);

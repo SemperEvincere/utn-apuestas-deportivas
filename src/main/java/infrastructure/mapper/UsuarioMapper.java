@@ -1,16 +1,22 @@
 package infrastructure.mapper;
 
 import domain.Apuesta;
+import domain.Partido;
 import domain.Usuario;
 import infrastructure.database.entities.ApuestaEntity;
 import infrastructure.database.entities.UsuarioEntity;
+import infrastructure.database.persistence.PartidoRepositoryImpl;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 
 public class UsuarioMapper {
 
+  PartidoRepositoryImpl partidoRepository = new PartidoRepositoryImpl();
   public UsuarioMapper() {
+
   }
   public UsuarioEntity toEntity(Usuario usuario) {
     UsuarioEntity usuarioEntity = new UsuarioEntity();
@@ -27,7 +33,7 @@ public class UsuarioMapper {
       ApuestaEntity apuestaEntity = new ApuestaEntity();
       apuestaEntity.setId(apuesta.getId());
       apuestaEntity.setIdUsuario(apuesta.getUsuario().getId());
-      apuestaEntity.setIdPartido(apuesta.getPartido().getId());
+      apuestaEntity.setIdPartido(UUID.fromString("03ab8efa-4d36-4fbb-bca3-1401f571ef62"));
       apuestaEntity.setGolesLocalPronosticados(apuesta.getGolesLocalPronosticados());
       apuestaEntity.setGolesVisitantePronosticados(apuesta.getGolesVisitantePronosticados());
       apuestaEntity.setMontoApostado(apuesta.getMontoApostado());
@@ -50,7 +56,8 @@ public class UsuarioMapper {
       Apuesta apuesta = new Apuesta();
       apuesta.setId(apuestaEntity.getId());
       apuesta.setUsuario(usuario);
-      apuesta.setPartido(null);
+      Optional<Partido> partido = partidoRepository.findById(apuestaEntity.getIdPartido());
+      apuesta.setPartido(partido.get());
       apuesta.setGolesLocalPronosticados(apuestaEntity.getGolesLocalPronosticados());
       apuesta.setGolesVisitantePronosticados(apuestaEntity.getGolesVisitantePronosticados());
       apuesta.setMontoApostado(apuestaEntity.getMontoApostado());
