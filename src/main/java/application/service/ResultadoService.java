@@ -33,6 +33,14 @@ public class ResultadoService implements IResultadoUseCase {
 
         int golesLocalPartido = partido.getGolesLocal();
         int golesVisitantePartido = partido.getGolesVisitante();
+        System.out.println("En el partido que se celebro en la ciudad de " + partido.getUbicacion());
+        System.out.println("Se enfrentaron " + partido.getEquipoLocal().getNombre() + " vs " + partido.getEquipoVisitante().getNombre());
+        System.out.println("Goles Local: " + partido.getGolesLocal());
+        System.out.println("Goles visitante: " + partido.getGolesVisitante());
+        System.out.println("El apostador con nick: " + usuario.getNick());
+        System.out.println("Pronosticó que :");
+        System.out.println("El equipo local marcaría: " + apuesta.getGolesLocalPronosticados());
+        System.out.println("El equipo visitante marcaría: " + apuesta.getGolesVisitantePronosticados());
         if (golesLocalesPronostico == golesLocalPartido && golesVisitantesPronostico == golesVisitantePartido) {
           aciertos += 1;
         }

@@ -67,7 +67,6 @@ public class Main {
     List<Apuesta> listaApuestas = usuario.get().getApuestas();
     for (Apuesta apuesta : listaApuestas) {
       System.out.println(apuesta.toString());
-
     }
   }
 
