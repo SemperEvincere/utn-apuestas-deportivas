@@ -39,6 +39,7 @@ public class Partido implements Comparable<Partido>{
     equipoDos.setCiudadOrigen(equipoDos.getCiudadOrigen().trim().toLowerCase());
     ubicacion = ubicacion.trim().toLowerCase();
 
+    //todo:
     if (ubicacion.equals(equipoUno.getCiudadOrigen())) {
       this.equipoLocal = equipoUno;
       this.equipoVisitante = equipoDos;

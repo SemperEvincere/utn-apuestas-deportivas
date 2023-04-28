@@ -1,5 +1,6 @@
 package infrastructure.database.persistence;
 
+import application.repository.IPartidoRepository;
 import application.repository.IRondaRepository;
 import domain.Partido;
 import domain.Ronda;
@@ -29,6 +30,7 @@ public class RondaRepositoryImpl implements IRondaRepository {
   private final CsvFileWriter csvFileWriter;
   private final IPersistence persistence;
   private final PartidoMapper partidoMapper;
+  private final IPartidoRepository partidoRepository;
 
   public RondaRepositoryImpl() {
     this.csvFileReader = new CsvFileReader();
@@ -36,6 +38,7 @@ public class RondaRepositoryImpl implements IRondaRepository {
     this.csvFileWriter = new CsvFileWriter();
     this.persistence = new RepositoryMySqlImpl();
     this.partidoMapper = new PartidoMapper();
+    this.partidoRepository = new PartidoRepositoryImpl();
   }
 
 
@@ -44,7 +47,7 @@ public class RondaRepositoryImpl implements IRondaRepository {
     List<EquipoEntity> equiposList = persistence.getAllEquipos();
     List<Ronda> rondas = new ArrayList<>();
     Set<LocalDate> fechasUtilizadas = new HashSet<>();
-
+    // todo: mandar al service esta logica
     // Mezclar los equipos
     Collections.shuffle(equiposList);
 
@@ -69,7 +72,7 @@ public class RondaRepositoryImpl implements IRondaRepository {
             partido.setNombreEquipoVisitante(equipoVisitante.getNombre());
             partido.setGolesLocal(0);
             partido.setGolesVisitante(0);
-
+            partidoRepository.save(partidoMapper.toDomain(partido));
             return partido;
           })
           .toList();

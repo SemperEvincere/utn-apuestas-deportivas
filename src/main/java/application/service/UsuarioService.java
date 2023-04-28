@@ -3,12 +3,13 @@ package application.service;
 import application.repository.IUsuarioRepository;
 import application.usecase.usuario.IUsuarioCreateUseCase;
 import application.usecase.usuario.IUsuarioFindUseCase;
+import application.usecase.usuario.IUsuarioUpdateUseCase;
 import domain.Usuario;
 import infrastructure.database.persistence.UsuarioRepositoryImpl;
 import java.util.Optional;
 import java.util.UUID;
 
-public class UsuarioService implements IUsuarioCreateUseCase, IUsuarioFindUseCase {
+public class UsuarioService implements IUsuarioCreateUseCase, IUsuarioFindUseCase, IUsuarioUpdateUseCase {
 
   private final IUsuarioRepository usuarioRepository;
 
@@ -50,5 +51,10 @@ public class UsuarioService implements IUsuarioCreateUseCase, IUsuarioFindUseCas
 
   public void read() {
     usuarioRepository.read();
+  }
+
+  @Override
+  public void updateUser(Usuario usuario) {
+    usuarioRepository.updateUser(usuario);
   }
 }

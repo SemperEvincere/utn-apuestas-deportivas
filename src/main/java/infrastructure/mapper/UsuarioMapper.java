@@ -7,13 +7,14 @@ import java.util.ArrayList;
 
 public class UsuarioMapper {
 
+  private final ApuestaMapper apuestaMapper = new ApuestaMapper();
   public UsuarioEntity toEntity(Usuario usuario) {
     UsuarioEntity usuarioEntity = new UsuarioEntity();
 
     usuarioEntity.setNick(usuario.getNick());
     usuarioEntity.setEmail(usuario.getEmail());
     usuarioEntity.setPassword(usuario.getPassword());
-    usuarioEntity.setApuestas(new ArrayList<>());
+    usuarioEntity.setApuestas(usuario.getApuestas().stream().map(apuestaMapper::toEntity).toList());
 
     return usuarioEntity;
   }

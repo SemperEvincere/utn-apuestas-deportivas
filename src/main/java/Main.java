@@ -1,6 +1,9 @@
+import application.service.ApuestaService;
 import application.service.EquipoService;
+import application.service.PartidoService;
 import application.service.RondaService;
 import application.service.UsuarioService;
+import domain.Apuesta;
 import domain.Equipo;
 import domain.Partido;
 import domain.Usuario;
@@ -8,13 +11,15 @@ import domain.Usuario;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.Optional;
+import java.util.UUID;
 
 public class Main {
 
   private static final UsuarioService usuarioService = new UsuarioService();
   private static final EquipoService equipoService = new EquipoService();
   private static final RondaService rondaService = new RondaService();
-
+  private static final PartidoService partidoService = new PartidoService();
+  private static final ApuestaService apuestaService = new ApuestaService();
 
   public static void main(String[] args) {
 
@@ -28,22 +33,27 @@ public class Main {
 
 //    RONDAS
 //    crearRondaDePartidos();
-    mostrarRondaDePartidos(1);
+//    mostrarRondaDePartidos(1);
 
 //    APUESTA
-    crearUnaApuesta("elsemper@gmail.com",
-            LocalDate.of(2023,9,22),
+    crearUnaApuesta("elsemper@gmail.com", UUID.fromString("03ab8efa-4d36-4fbb-bca3-1401f571ef62"),
             2,
             1,
             10000d);
 
+    mostrarResultadosDePartido(UUID.fromString("03ab8efa-4d36-4fbb-bca3-1401f571ef62"));
 
+
+  }
+
+  private static void mostrarResultadosDePartido(UUID uuid) {
+    Optional<Partido> partido = partidoService.findPartidoById(uuid);
 
   }
 
   private static void crearUnaApuesta(
           String emailApostador,
-          LocalDate fechaPartido,
+          UUID idPartido,
           int golesLocal,
           int golesVisitante,
           double montoApuesta) {
@@ -53,13 +63,21 @@ public class Main {
       return;
     }
     Usuario usuario = usuarioSaved.get();
-    Partido partidoParaApuesta = rondaService.findPartidoByFecha(fechaPartido);
-    if(partidoParaApuesta == null) {
-      System.out.println("No existe un partido en la fecha: " + fechaPartido);
+    Optional<Partido> partidoParaApuesta = partidoService.findPartidoById(idPartido);
+    if(partidoParaApuesta.isEmpty()) {
+      System.out.println("No existe un partido con este id: " + idPartido);
       return;
     }
-    
-    System.out.println(partidoParaApuesta.getEquipoLocal().getNombre());
+
+    Apuesta apuestaCreated = apuestaService.createApuesta(
+        emailApostador,
+        partidoParaApuesta.get().getId(),
+        golesLocal,
+        golesVisitante,
+        montoApuesta);
+    usuario.getApuestas().add(apuestaCreated);
+    usuarioService.updateUser(usuario);
+
   }
 
   private static void mostrarRondaDePartidos(int rondaNumero) {

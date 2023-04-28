@@ -414,6 +414,24 @@ public class RepositoryMySqlImpl implements IPersistence {
     return partidosPorRonda.stream().filter(partido -> partido.getFecha().isEqual(fechaPartido)).findFirst().get();
   }
 
+  @Override
+  public void updateUser(UsuarioEntity usuarioEntity) {
+    String query = "UPDATE usuarios SET nick = ?, email = ?, password = ?, apuestas = ? WHERE id = ?";
+    try (Connection conn = dataSource.getConnection();
+        PreparedStatement pstmt = conn.prepareStatement(query)) {
+      pstmt.setString(1, usuarioEntity.getNick());
+      pstmt.setString(2, usuarioEntity.getEmail());
+      pstmt.setString(3, usuarioEntity.getPassword());
+      pstmt.setString(4, mapper.writeValueAsString(usuarioEntity.getApuestas()));
+      pstmt.setString(5, String.valueOf(usuarioEntity.getId()));
+      pstmt.executeUpdate();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    } catch (JsonProcessingException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
 
   public Optional<EquipoEntity> findEquipoByNombre(String nombre) {
     Optional<EquipoEntity> equipo = Optional.empty();

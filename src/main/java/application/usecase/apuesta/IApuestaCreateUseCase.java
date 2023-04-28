@@ -1,10 +1,11 @@
 package application.usecase.apuesta;
 
+import domain.Apuesta;
 import java.util.UUID;
 
 public interface IApuestaCreateUseCase {
 
-  void createApuesta(String emailUsuario,
+  Apuesta createApuesta(String emailUsuario,
       UUID idPartido,
       int golesLocalPronosticados,
       int golesVisitantePronosticados,

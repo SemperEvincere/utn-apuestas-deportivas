@@ -25,4 +25,7 @@ public class Apuesta {
     this.golesVisitantePronosticados = golesVisitantePronosticados;
     this.montoApostado = montoApostado;
   }
+
+  //todo : calcularResultado(); En la clase Usuario un metodo calcularPuntos que recorrar la lista de apuestas y
+  // compare el resultado de la apuesta con el resultado del partido de esa misma apuesta
 }

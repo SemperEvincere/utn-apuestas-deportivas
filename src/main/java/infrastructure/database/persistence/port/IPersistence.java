@@ -40,4 +40,6 @@ public interface IPersistence {
   List<RondaEntity> getAllRondas();
 
   Partido findPartidoByFecha(LocalDate fechaPartido);
+
+  void updateUser(UsuarioEntity usuarioEntity);
 }

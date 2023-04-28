@@ -100,4 +100,9 @@ public class RepositoryFileImpl implements IPersistence {
   public Partido findPartidoByFecha(LocalDate fechaPartido) {
     return null;
   }
+
+  @Override
+  public void updateUser(UsuarioEntity usuarioEntity) {
+
+  }
 }

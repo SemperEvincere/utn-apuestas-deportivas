@@ -41,4 +41,10 @@ public class UsuarioRepositoryImpl implements IUsuarioRepository {
   public Optional<Usuario> findUsuarioById(UUID idUsuario) {
     return persistence.findUsuarioById(idUsuario).map(usuarioMapper::toDomain);
   }
+
+  @Override
+  public void updateUser(Usuario usuario) {
+    UsuarioEntity usuarioEntity = usuarioMapper.toEntity(usuario);
+    persistence.updateUser(usuarioEntity);
+  }
 }

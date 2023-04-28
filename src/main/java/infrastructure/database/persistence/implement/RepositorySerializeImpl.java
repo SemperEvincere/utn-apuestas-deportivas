@@ -78,6 +78,11 @@ public class RepositorySerializeImpl implements IPersistence {
   }
 
   @Override
+  public void updateUser(UsuarioEntity usuarioEntity) {
+
+  }
+
+  @Override
   public void saveAll(List<EquipoEntity> equipos) {
 
   }

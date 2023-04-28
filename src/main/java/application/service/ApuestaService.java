@@ -27,7 +27,7 @@ public class ApuestaService implements IApuestaCreateUseCase, IApuestaFindByUsua
 
 
   @Override
-  public void createApuesta(String emailUsuario,
+  public Apuesta createApuesta(String emailUsuario,
       UUID idPartido,
       int golesLocalPronosticados,
       int golesVisitantePronosticados,
@@ -41,6 +41,7 @@ public class ApuestaService implements IApuestaCreateUseCase, IApuestaFindByUsua
       }
       Apuesta apuesta = new Apuesta(usuario, partido.get(), golesLocalPronosticados, golesVisitantePronosticados, montoApostado);
       apuestaRepository.save(apuesta);
+      return apuesta;
     } else {
       throw new IllegalArgumentException("El usuario no existe");
     }

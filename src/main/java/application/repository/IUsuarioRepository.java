@@ -13,4 +13,6 @@ public interface IUsuarioRepository {
   void read();
 
   Optional<Usuario> findUsuarioById(UUID idUsuario);
+
+  void updateUser(Usuario usuario);
 }
