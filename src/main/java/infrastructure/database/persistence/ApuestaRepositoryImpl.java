@@ -1,6 +1,7 @@
 package infrastructure.database.persistence;
 
 import application.repository.IApuestaRepository;
+import application.service.ApuestaService;
 import domain.Apuesta;
 import infrastructure.database.persistence.implement.RepositoryMySqlImpl;
 import infrastructure.database.entities.ApuestaEntity;
@@ -9,6 +10,7 @@ import infrastructure.mapper.ApuestaMapper;
 import infrastructure.database.persistence.port.IPersistence;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public class ApuestaRepositoryImpl implements IApuestaRepository {
 
@@ -37,5 +39,10 @@ public class ApuestaRepositoryImpl implements IApuestaRepository {
     }
 
     return Optional.empty();
+  }
+
+  @Override
+  public ApuestaEntity findApuestaById(UUID idApuesta) {
+    return persistence.findApuestaById(idApuesta);
   }
 }

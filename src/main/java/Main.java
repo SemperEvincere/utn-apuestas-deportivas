@@ -8,18 +8,17 @@ import domain.Equipo;
 import domain.Partido;
 import domain.Usuario;
 
-import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.Optional;
 import java.util.UUID;
 
 public class Main {
 
-  private static final UsuarioService usuarioService = new UsuarioService();
-  private static final EquipoService equipoService = new EquipoService();
-  private static final RondaService rondaService = new RondaService();
-  private static final PartidoService partidoService = new PartidoService();
-  private static final ApuestaService apuestaService = new ApuestaService();
+  private static UsuarioService usuarioService = new UsuarioService();
+  private static EquipoService equipoService = new EquipoService();
+  private static RondaService rondaService = new RondaService();
+  private static PartidoService partidoService = new PartidoService();
+  private static ApuestaService apuestaService = new ApuestaService();
 
   public static void main(String[] args) {
 
@@ -33,7 +32,7 @@ public class Main {
 
 //    RONDAS
 //    crearRondaDePartidos();
-//    mostrarRondaDePartidos(1);
+    mostrarRondaDePartidos(1);
 
 //    APUESTA
     crearUnaApuesta("elsemper@gmail.com", UUID.fromString("03ab8efa-4d36-4fbb-bca3-1401f571ef62"),
@@ -41,7 +40,7 @@ public class Main {
             1,
             10000d);
 
-    mostrarResultadosDePartido(UUID.fromString("03ab8efa-4d36-4fbb-bca3-1401f571ef62"));
+//    mostrarResultadosDePartido(UUID.fromString("03ab8efa-4d36-4fbb-bca3-1401f571ef62"));
 
 
   }
@@ -75,8 +74,8 @@ public class Main {
         golesLocal,
         golesVisitante,
         montoApuesta);
-    usuario.getApuestas().add(apuestaCreated);
-    usuarioService.updateUser(usuario);
+
+    usuarioService.updateUser(usuario, apuestaCreated.getId(), apuestaService);
 
   }
 

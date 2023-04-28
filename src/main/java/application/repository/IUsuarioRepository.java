@@ -1,5 +1,7 @@
 package application.repository;
 
+import application.service.ApuestaService;
+import application.service.UsuarioService;
 import domain.Usuario;
 import java.util.Optional;
 import java.util.UUID;
@@ -14,5 +16,5 @@ public interface IUsuarioRepository {
 
   Optional<Usuario> findUsuarioById(UUID idUsuario);
 
-  void updateUser(Usuario usuario);
+  void updateUser(Usuario usuario, UUID idApuesta, ApuestaService apuestaService);
 }

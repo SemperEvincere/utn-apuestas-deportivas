@@ -13,12 +13,12 @@ import java.io.IOException;
 
 public class CsvFileWriter {
 
-  private final UsuarioMapper usuarioMapper;
-  private final EquipoMapper equipoMapper;
+//  private final UsuarioMapper usuarioMapper;
+//  private final EquipoMapper equipoMapper;
 
   public CsvFileWriter() {
-    this.usuarioMapper = new UsuarioMapper();
-    this.equipoMapper = new EquipoMapper();
+//    this.usuarioMapper = new UsuarioMapper();
+//    this.equipoMapper = new EquipoMapper();
   }
 
   public void save(Object entity) {
@@ -44,10 +44,10 @@ public class CsvFileWriter {
       }
     }
 
-    UsuarioEntity usuarioEntity = usuarioMapper.toEntity(usuario);
+//    UsuarioEntity usuarioEntity = usuarioMapper.toEntity(usuario);
     try {
       FileWriter fileWriter = new FileWriter("./app/src/main/resources/csv/usuarios/usuarios.csv", true);
-      fileWriter.append(usuarioEntity.toString());
+//      fileWriter.append(usuarioEntity.toString());
       fileWriter.append("\n");
       fileWriter.flush();
       fileWriter.close();

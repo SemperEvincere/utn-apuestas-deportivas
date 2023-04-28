@@ -105,4 +105,9 @@ public class RepositoryFileImpl implements IPersistence {
   public void updateUser(UsuarioEntity usuarioEntity) {
 
   }
+
+  @Override
+  public ApuestaEntity findApuestaById(UUID idApuesta) {
+    return null;
+  }
 }

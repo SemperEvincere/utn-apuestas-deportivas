@@ -4,6 +4,7 @@ import application.repository.IUsuarioRepository;
 import application.usecase.usuario.IUsuarioCreateUseCase;
 import application.usecase.usuario.IUsuarioFindUseCase;
 import application.usecase.usuario.IUsuarioUpdateUseCase;
+import domain.Apuesta;
 import domain.Usuario;
 import infrastructure.database.persistence.UsuarioRepositoryImpl;
 import java.util.Optional;
@@ -11,7 +12,7 @@ import java.util.UUID;
 
 public class UsuarioService implements IUsuarioCreateUseCase, IUsuarioFindUseCase, IUsuarioUpdateUseCase {
 
-  private final IUsuarioRepository usuarioRepository;
+  private IUsuarioRepository usuarioRepository;
 
   public UsuarioService() {
     this.usuarioRepository = new UsuarioRepositoryImpl();
@@ -54,7 +55,7 @@ public class UsuarioService implements IUsuarioCreateUseCase, IUsuarioFindUseCas
   }
 
   @Override
-  public void updateUser(Usuario usuario) {
-    usuarioRepository.updateUser(usuario);
+  public void updateUser(Usuario usuario, UUID idApuesta, ApuestaService apuestaService) {
+    usuarioRepository.updateUser(usuario, idApuesta, apuestaService);
   }
 }

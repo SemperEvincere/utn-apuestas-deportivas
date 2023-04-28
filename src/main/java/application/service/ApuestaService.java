@@ -2,21 +2,23 @@ package application.service;
 
 import application.repository.IApuestaRepository;
 import application.usecase.apuesta.IApuestaCreateUseCase;
-import application.usecase.apuesta.IApuestaFindByUsuarioEmail;
+import application.usecase.apuesta.IApuestaFindByUseCase;
 import domain.Apuesta;
 import domain.Partido;
 import domain.Usuario;
+import infrastructure.database.entities.ApuestaEntity;
 import infrastructure.database.persistence.ApuestaRepositoryImpl;
+import infrastructure.database.persistence.UsuarioRepositoryImpl;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class ApuestaService implements IApuestaCreateUseCase, IApuestaFindByUsuarioEmail {
+public class ApuestaService implements IApuestaCreateUseCase, IApuestaFindByUseCase {
 
-  private final UsuarioService usuarioService;
-  private final EquipoService equipoService;
-  private final IApuestaRepository apuestaRepository;
-  private final PartidoService partidoService;
+  private UsuarioService usuarioService;
+  private EquipoService equipoService;
+  private IApuestaRepository apuestaRepository;
+  private PartidoService partidoService;
 
   public ApuestaService() {
     this.usuarioService = new UsuarioService();
@@ -56,5 +58,10 @@ public class ApuestaService implements IApuestaCreateUseCase, IApuestaFindByUsua
     }
 
     return Optional.empty();
+  }
+
+  @Override
+  public ApuestaEntity findApuestaById(UUID idApuesta) {
+    return apuestaRepository.findApuestaById(idApuesta);
   }
 }

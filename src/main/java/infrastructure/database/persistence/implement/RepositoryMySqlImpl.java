@@ -422,7 +422,9 @@ public class RepositoryMySqlImpl implements IPersistence {
       pstmt.setString(1, usuarioEntity.getNick());
       pstmt.setString(2, usuarioEntity.getEmail());
       pstmt.setString(3, usuarioEntity.getPassword());
-      pstmt.setString(4, mapper.writeValueAsString(usuarioEntity.getApuestas()));
+      byte[] apuestasBytes = mapper.writeValueAsBytes(usuarioEntity.getApuestas());
+      ByteArrayInputStream bais = new ByteArrayInputStream(apuestasBytes);
+      pstmt.setBinaryStream(4, bais, apuestasBytes.length);
       pstmt.setString(5, String.valueOf(usuarioEntity.getId()));
       pstmt.executeUpdate();
     } catch (SQLException e) {
@@ -430,6 +432,29 @@ public class RepositoryMySqlImpl implements IPersistence {
     } catch (JsonProcessingException e) {
       throw new RuntimeException(e);
     }
+  }
+
+  @Override
+  public ApuestaEntity findApuestaById(UUID idApuesta) {
+    String query = "SELECT * FROM apuestas WHERE id = ?";
+    try (Connection conn = dataSource.getConnection();
+        PreparedStatement pstmt = conn.prepareStatement(query)) {
+      pstmt.setString(1, String.valueOf(idApuesta));
+      ResultSet rs = pstmt.executeQuery();
+      if (rs.next()) {
+        String id = rs.getString("id");
+        String idUsuario = rs.getString("idUsuario");
+        String idPartido = rs.getString("idPartido");
+        String golesLocalPronosticados = rs.getString("golesLocalPronosticados");
+        String golesVisitantePronosticados = rs.getString("golesVisitantePronosticados");
+        String montoApostado = rs.getString("montoApostado");
+
+        return new ApuestaEntity(UUID.fromString(id), UUID.fromString(idUsuario), UUID.fromString(idPartido), Integer.parseInt(golesLocalPronosticados), Integer.parseInt(golesVisitantePronosticados), Double.parseDouble(montoApostado));
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    return null;
   }
 
 

@@ -1,7 +1,11 @@
 package infrastructure.database.persistence;
 
 import application.repository.IUsuarioRepository;
+import application.service.ApuestaService;
+import application.service.UsuarioService;
+import application.usecase.apuesta.IApuestaFindByUseCase;
 import domain.Usuario;
+import infrastructure.database.entities.ApuestaEntity;
 import infrastructure.database.persistence.implement.RepositoryMySqlImpl;
 import infrastructure.database.persistence.port.IPersistence;
 import infrastructure.database.entities.UsuarioEntity;
@@ -11,15 +15,17 @@ import java.util.UUID;
 
 public class UsuarioRepositoryImpl implements IUsuarioRepository {
 
-  private final IPersistence persistence;
-  private final UsuarioMapper usuarioMapper;
+  private IPersistence persistence;
+  private UsuarioMapper usuarioMapper;
 
   public UsuarioRepositoryImpl() {
 //    this.persistence = new RepositoryFileImpl();
 //    this.persistence = new RepositorySerializeImpl();
     this.persistence = new RepositoryMySqlImpl();
-    usuarioMapper = new UsuarioMapper();
+    this.usuarioMapper = new UsuarioMapper();
   }
+
+
   @Override
   public void save(Usuario usuario) {
     UsuarioEntity usuarioEntity = usuarioMapper.toEntity(usuario);
@@ -43,8 +49,10 @@ public class UsuarioRepositoryImpl implements IUsuarioRepository {
   }
 
   @Override
-  public void updateUser(Usuario usuario) {
+  public void updateUser(Usuario usuario, UUID idApuesta, ApuestaService apuestaService) {
     UsuarioEntity usuarioEntity = usuarioMapper.toEntity(usuario);
+    ApuestaEntity apuestaEntity = apuestaService.findApuestaById(idApuesta);
+    usuarioEntity.getApuestas().add(apuestaEntity);
     persistence.updateUser(usuarioEntity);
   }
 }

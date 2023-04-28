@@ -83,6 +83,11 @@ public class RepositorySerializeImpl implements IPersistence {
   }
 
   @Override
+  public ApuestaEntity findApuestaById(UUID idApuesta) {
+    return null;
+  }
+
+  @Override
   public void saveAll(List<EquipoEntity> equipos) {
 
   }

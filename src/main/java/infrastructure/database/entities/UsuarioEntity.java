@@ -1,6 +1,7 @@
 package infrastructure.database.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
@@ -25,5 +26,13 @@ public class UsuarioEntity implements Serializable {
   @Override
   public String toString() {
     return id + "," + nick + "," + email + "," + password + "," + apuestas.size();
+  }
+
+  public List<ApuestaEntity> getApuestas() {
+    return apuestas;
+  }
+
+  public void setApuestas(List<ApuestaEntity> apuestas) {
+    this.apuestas = new ArrayList<>(apuestas);
   }
 }

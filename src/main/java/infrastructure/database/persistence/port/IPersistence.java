@@ -42,4 +42,6 @@ public interface IPersistence {
   Partido findPartidoByFecha(LocalDate fechaPartido);
 
   void updateUser(UsuarioEntity usuarioEntity);
+
+  ApuestaEntity findApuestaById(UUID idApuesta);
 }

@@ -9,20 +9,17 @@ import java.util.List;
 
 public class ApuestaMapper {
 
-private final UsuarioMapper usuarioMapper;
-private final PartidoMapper partidoMapper;
 private final UsuarioService usuarioService;
 private final PartidoService partidoService;
 
   public ApuestaMapper() {
-    this.usuarioMapper = new UsuarioMapper();
-    this.partidoMapper = new PartidoMapper();
     this.usuarioService = new UsuarioService();
     this.partidoService = new PartidoService();
   }
 
     public ApuestaEntity toEntity(Apuesta apuesta) {
       ApuestaEntity apuestaEntity = new ApuestaEntity();
+      apuestaEntity.setId(apuesta.getId());
       apuestaEntity.setIdUsuario(apuesta.getUsuario().getId());
       apuestaEntity.setIdPartido(apuesta.getPartido().getId());
       apuestaEntity.setGolesLocalPronosticados(apuesta.getGolesLocalPronosticados());
