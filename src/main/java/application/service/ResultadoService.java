@@ -15,13 +15,11 @@ public class ResultadoService implements IResultadoUseCase {
     List<Apuesta> apuestasDelUsuario = usuario.getApuestas();
     List<Partido> partidosApostados = apuestasDelUsuario.stream().map(Apuesta::getPartido).toList();
     Random random = new Random();
+    Random random1 = new Random();
 
     for (Partido partido : partidosApostados) {
       int golesLocal = random.nextInt(11);
-      int golesVisitante = -1;
-      do {
-        golesVisitante = random.nextInt(11);
-      } while (golesVisitante == golesLocal); // Repetir si los goles son iguales
+      int golesVisitante = random1.nextInt(11);
       partido.setGolesLocal(golesLocal);
       partido.setGolesVisitante(golesVisitante);
     }
