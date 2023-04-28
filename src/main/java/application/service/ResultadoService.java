@@ -17,16 +17,26 @@ public class ResultadoService implements IResultadoUseCase {
     Random random = new Random();
 
     for (Partido partido : partidosApostados) {
-      partido.setGolesLocal(random.nextInt(11));
-      partido.setGolesVisitante(random.nextInt(11));
+      int golesLocal = random.nextInt(11);
+      int golesVisitante = -1;
+      do {
+        golesVisitante = random.nextInt(11);
+      } while (golesVisitante == golesLocal); // Repetir si los goles son iguales
+      partido.setGolesLocal(golesLocal);
+      partido.setGolesVisitante(golesVisitante);
     }
 
     int aciertos = 0;
 
     for (Apuesta apuesta : apuestasDelUsuario) {
       for (Partido partido : partidosApostados) {
-        if(apuesta.getGolesLocalPronosticados()==partido.getGolesLocal() && apuesta.getGolesVisitantePronosticados()==partido.getGolesLocal()) {
-          aciertos+=1;
+        int golesLocalesPronostico = apuesta.getGolesLocalPronosticados();
+        int golesVisitantesPronostico = apuesta.getGolesVisitantePronosticados();
+
+        int golesLocalPartido = partido.getGolesLocal();
+        int golesVisitantePartido = partido.getGolesVisitante();
+        if (golesLocalesPronostico == golesLocalPartido && golesVisitantesPronostico == golesVisitantePartido) {
+          aciertos += 1;
         }
       }
     }

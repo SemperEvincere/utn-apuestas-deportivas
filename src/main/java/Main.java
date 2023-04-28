@@ -45,7 +45,7 @@ public class Main {
 //            1,
 //            10000d);
 
-//    mostrarApuestasDeUsuario("elsemper@gmail.com");
+    mostrarApuestasDeUsuario("elsemper@gmail.com");
 //    mostrarResultadosDePartido(UUID.fromString("03ab8efa-4d36-4fbb-bca3-1401f571ef62"));
 
     Optional<Usuario> usuario = usuarioService.findUsuarioByEmail("elsemper@gmail.com");
